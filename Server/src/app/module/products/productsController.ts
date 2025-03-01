@@ -10,7 +10,7 @@ const createConProduct = asyncFunc(async (req, res) => {
     const result = await productServices.createProduct(body)
     sendResponse(res, {
         statusCode: StatusCodes.CREATED,
-        message: 'Bi_Cycle created successfully',
+        message: 'Product created successfully',
         data: result
     })
 })
@@ -21,7 +21,7 @@ const getConProduct = asyncFunc(async (req, res) => {
     const result = await productServices.getProducts(queryData)
     sendResponse(res, {
         statusCode: StatusCodes.OK,
-        message: 'Bicycles retrieved successfully',
+        message: 'Products retrieved successfully',
         data: result,
     })
 })
@@ -33,7 +33,7 @@ const getSingleConProduct = asyncFunc(async (req, res) => {
     const result = await productServices.getSingleProducts(id)
     sendResponse(res, {
         statusCode: StatusCodes.OK,
-        message: 'Bicycle retrieved successfully',
+        message: 'Product retrieved successfully',
         data: result
     })
 })
@@ -45,7 +45,7 @@ const updateSingleConProduct = asyncFunc(async (req, res) => {
     const result = await productServices.updateSingleProducts(id, body)
     sendResponse(res, {
         statusCode: StatusCodes.OK,
-        message: 'Bicycle updated successfully',
+        message: 'Product updated successfully',
         data: result
     })
 })
@@ -56,7 +56,7 @@ const deleteSingleConProduct = asyncFunc(async (req, res) => {
     await productServices.deleteSingleProducts(id)
     sendResponse(res, {
         statusCode: StatusCodes.OK,
-        message: 'Bicycle deleted successfully',
+        message: 'Product deleted successfully',
         data: null
     })
 })

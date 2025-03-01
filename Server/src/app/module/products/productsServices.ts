@@ -12,7 +12,7 @@ const createProduct = async (payload: productInterface) => {
 }
 // get all products 
 const getProducts = async (query: Record<string, unknown>) => {
-    const searchableFields = ['description', 'type', 'brand', 'name'];
+    const searchableFields = ['description', 'category', 'name'];
     const productQuery = new QuiryBuilder(productModel.find(), query)
         .search(searchableFields)
         .filter()
@@ -27,7 +27,6 @@ const getProducts = async (query: Record<string, unknown>) => {
         meta,
         result,
     };
-
 }
 // get single product 
 const getSingleProducts = async (id: string) => {

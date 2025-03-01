@@ -9,7 +9,6 @@ const productSchema = new Schema<productInterface>({
     },
     image: {
         type: String,
-        required: [true, 'Image field is required']
     },
     brand: {
         type: String,
@@ -19,13 +18,10 @@ const productSchema = new Schema<productInterface>({
         type: Number,
         required: [true, 'Price field is required']
     },
-    type: {
-        type: String,
-        enum: {
-            values: ['Mountain', 'Road', 'Hybrid', 'BMX', 'Electric'],
-            message: '{VALUE} is not valid'
-        },
-        required: [true, 'Type field is required']
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: 'Category',
+        required: [true, 'Category is required'],
     },
     description: {
         type: String,
@@ -40,8 +36,16 @@ const productSchema = new Schema<productInterface>({
         required: [true, 'InStock field is required'],
         default: true
     },
+    expireDate: {
+        type: Date,
+        required: [true, 'expireDate  is required'],
+    },
+    manufacturerDetails: {
+        type: String,
+        required: [true, 'Manufacturer Details  is required'],
+    }
 
 }, { timestamps: true, versionKey: false })
 
 // create model 
-export const productModel = model<productInterface>('products', productSchema)
+export const productModel = model<productInterface>('Product', productSchema)

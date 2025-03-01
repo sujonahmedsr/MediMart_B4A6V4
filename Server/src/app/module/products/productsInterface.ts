@@ -1,11 +1,15 @@
+import { Types } from "mongoose";
+
 // product interface cretae 
 export interface productInterface {
     name: string,
-    image: string,
+    image?: string,
     brand: string,
     price: number,
-    type: 'Mountain' | 'Road' | 'Hybrid' | 'BMX' | 'Electric',
+    category: Types.ObjectId,
     description: string,
     quantity: number,
-    inStock: boolean
+    inStock: boolean,
+    expireDate: Date,
+    manufacturerDetails: string
 }
