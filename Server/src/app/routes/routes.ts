@@ -6,7 +6,7 @@ import orderRouter from "../module/orders/ordersRouter";
 const router = Router();
 const moduleRoutes = [
   {
-    path: "/auth",
+    path: "/user",
     route: authRouter,
   },
   {

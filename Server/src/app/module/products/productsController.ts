@@ -4,7 +4,7 @@ import asyncFunc from "../../utils/asyncFunc";
 import sendResponse from "../../utils/sendRespose";
 import { StatusCodes } from "http-status-codes";
 
-// create bycle product 
+// create product 
 const createConProduct = asyncFunc(async (req, res) => {
     const body = req.body;
     const result = await productServices.createProduct(body)
@@ -15,7 +15,7 @@ const createConProduct = asyncFunc(async (req, res) => {
     })
 })
 
-// get all bycles product 
+// get alls product 
 const getConProduct = asyncFunc(async (req, res) => {
     const queryData = req?.query;
     const result = await productServices.getProducts(queryData)
@@ -27,7 +27,7 @@ const getConProduct = asyncFunc(async (req, res) => {
 })
 
 
-// get single bycle product 
+// get single product 
 const getSingleConProduct = asyncFunc(async (req, res) => {
     const id = req.params.id
     const result = await productServices.getSingleProducts(id)
@@ -38,7 +38,7 @@ const getSingleConProduct = asyncFunc(async (req, res) => {
     })
 })
 
-// update single bycle product 
+// update single product 
 const updateSingleConProduct = asyncFunc(async (req, res) => {
     const body = req.body
     const id = req.params.id
@@ -50,7 +50,7 @@ const updateSingleConProduct = asyncFunc(async (req, res) => {
     })
 })
 
-// delete single bycle 
+// delete single 
 const deleteSingleConProduct = asyncFunc(async (req, res) => {
     const id = req.params.id
     await productServices.deleteSingleProducts(id)
