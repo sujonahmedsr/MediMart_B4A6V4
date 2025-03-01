@@ -6,8 +6,6 @@ import { productValidationSchema } from "./productValidation";
 
 const productsRouter = Router()
 
-
-
 productsRouter.post('/create', authMid("admin"), validateRequest(productValidationSchema), productController.createConProduct)
 productsRouter.get('/',  productController.getConProduct)
 productsRouter.get('/:id',  productController.getSingleConProduct)

@@ -42,7 +42,12 @@ const productSchema = new Schema<productInterface>({
     },
     manufacturerDetails: {
         type: String,
-        required: [true, 'Manufacturer Details  is required'],
+        required: [true, 'Manufacturer Details is required'],
+    },
+    requiredPrescription: {
+        type: Boolean,
+        required: [true, 'requiredPrescription is required'],
+        default: false
     }
 
 }, { timestamps: true, versionKey: false })

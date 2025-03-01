@@ -11,5 +11,6 @@ export interface productInterface {
     quantity: number,
     inStock: boolean,
     expireDate: Date,
-    manufacturerDetails: string
+    manufacturerDetails: string,
+    requiredPrescription: boolean
 }
