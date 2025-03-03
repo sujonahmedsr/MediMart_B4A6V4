@@ -1,10 +1,12 @@
+import { allCategories } from "@/services/Category";
 
-const page = () => {
-    return (
-        <div>
-            all category
-        </div>
-    );
+const ProductCategoryPage = async () => {
+  const { data } = await allCategories();
+  return (
+    <div>
+      <ManageCategories categories={data} />
+    </div>
+  );
 };
 
-export default page;
+export default ProductCategoryPage;
