@@ -11,6 +11,7 @@ const categorySchema = new Schema<categoryInterface>({
     },
     icon: {
         type: String,
+        default: null
     }
 }, { timestamps: true, versionKey: false });
 
