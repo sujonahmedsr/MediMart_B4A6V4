@@ -34,3 +34,22 @@ export const createCategory = async (data: FieldValues) => {
         throw new Error(error?.message)
     }
 }
+
+// delete category
+export const deleteCategory = async (categoryId: string): Promise<any> => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_API}/category/${categoryId}`,
+        {
+          method: "DELETE",
+        //   headers: {
+        //     Authorization: (await cookies()).get("accessToken")!.value,
+        //   },
+        }
+      );
+      revalidateTag("CATEGORY");
+      return res.json();
+    } catch (error: any) {
+      return Error(error?.message);
+    }
+  };

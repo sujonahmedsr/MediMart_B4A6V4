@@ -6,40 +6,42 @@ import { Trash } from "lucide-react";
 import { NMTable } from "@/components/ui/core/NMTable";
 import { ICategory } from "@/types/category";
 import CreateCategoryModal from "./CreateCategoryModal";
-// import { deleteCategory } from "@/services/Category";
-// import DeleteConfirmationModal from "@/components/ui/core/NMModal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "@/components/ui/core/DeleteConfirmationModal";
+import { useState } from "react";
+import { deleteCategory } from "@/services/Category";
+import { toast } from "sonner";
 
 type TCategoriesProps = {
     categories: ICategory[];
 };
 
 const ManageCategories = ({ categories }: TCategoriesProps) => {
-    // const [isModalOpen, setModalOpen] = useState(false);
-    // const [selectedId, setSelectedId] = useState<string | null>(null);
-    // const [selectedItem, setSelectedItem] = useState<string | null>(null);
-    // const handleDelete = (data: ICategory) => {
-    //     console.log(data);
-    //     setSelectedId(data?._id);
-    //     setSelectedItem(data?.name);
-    //     setModalOpen(true);
-    // };
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [selectedId, setSelectedId] = useState<string | null>(null);
+    const [selectedItem, setSelectedItem] = useState<string | null>(null);
+    const handleDelete = (data: ICategory) => {
+        console.log(data);
+        setSelectedId(data?._id);
+        setSelectedItem(data?.name);
+        setModalOpen(true);
+    };
 
-    // const handleDeleteConfirm = async () => {
-    //     try {
-    //         if (selectedId) {
-    //             const res = await deleteCategory(selectedId);
-    //             console.log(res);
-    //             if (res.success) {
-    //                 toast.success(res.message);
-    //                 setModalOpen(false);
-    //             } else {
-    //                 toast.error(res.message);
-    //             }
-    //         }
-    //     } catch (err: any) {
-    //         console.error(err?.message);
-    //     }
-    // };
+    const handleDeleteConfirm = async () => {
+        try {
+            if (selectedId) {
+                const res = await deleteCategory(selectedId);
+                console.log(res);
+                if (res?.status) {
+                    toast.success(res.message);
+                    setModalOpen(false);
+                } else {
+                    toast.error(res.message);
+                }
+            }
+        } catch (err: any) {
+            console.error(err?.message);
+        }
+    };
 
     const columns: ColumnDef<ICategory>[] = [
         {
@@ -69,11 +71,11 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
         {
             accessorKey: "action",
             header: () => <div>Action</div>,
-            cell: () => (
+            cell: ({row}) => (
                 <button
                     className="text-red-500"
                     title="Delete"
-                    // onClick={() => handleDelete(row.original)}
+                    onClick={() => handleDelete(row.original)}
                 >
                     <Trash className="w-5 h-5" />
                 </button>
@@ -88,12 +90,12 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
                 <CreateCategoryModal />
             </div>
             <NMTable data={categories} columns={columns} />
-            {/* <DeleteConfirmationModal
+            <DeleteConfirmationModal
                 name={selectedItem}
                 isOpen={isModalOpen}
                 onOpenChange={setModalOpen}
                 onConfirm={handleDeleteConfirm}
-            /> */}
+            />
         </div>
     );
 };
