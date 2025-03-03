@@ -3,31 +3,42 @@ import AppError from "../../errors/AppError";
 import { productInterface } from "./productsInterface";
 import { productModel } from "./productsSchmeModel";
 import QuiryBuilder from "../../QuiryBuilder/QuiryBuilder";
+import { categoryModel } from "../category/categorySchemaModel";
 
 
 // create post 
 const createProduct = async (payload: productInterface) => {
+    const isCategoryExist = await categoryModel.findById(payload?.category)
+    if(!isCategoryExist){
+        throw new AppError(StatusCodes.NOT_FOUND, "Category not existed.")
+    }
     const result = await productModel.create(payload)
     return result
 }
 // get all products 
-const getProducts = async (query: Record<string, unknown>) => {
-    const searchableFields = ['description', 'category', 'name'];
-    const productQuery = new QuiryBuilder(productModel.find(), query)
-        .search(searchableFields)
-        .filter()
-        .sort()
-        .paginate()
-        .fields();
 
-    const result = await productQuery.modelQuery;
-    const meta = await productQuery.countTotal();
-    
-    return {
-        meta,
-        result,
-    };
-}
+const getProducts = async (query: Record<string, unknown>) => {
+  const searchableFields = ["description", "name"];
+
+  const productQuery = new QuiryBuilder(
+    productModel.find().populate("category", "name icon"),
+    query
+  )
+    .search(searchableFields)
+    .filter() 
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await productQuery.modelQuery.lean();
+  const meta = await productQuery.countTotal();
+
+  return {
+    meta,
+    result,
+  };
+};
+
 // get single product 
 const getSingleProducts = async (id: string) => {
 
