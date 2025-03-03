@@ -28,6 +28,8 @@ const CreateCategoryModal = () => {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
 
+  console.log(imageFiles);
+  
   const form = useForm();
   const {
     reset,
