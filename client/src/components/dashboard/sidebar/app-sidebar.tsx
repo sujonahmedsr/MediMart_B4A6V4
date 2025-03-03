@@ -3,11 +3,6 @@
 import * as React from "react";
 import {
   Bot,
-  Frame,
-  LifeBuoy,
-  Map,
-  PieChart,
-  Send,
   SquareTerminal,
 } from "lucide-react";
 
@@ -34,16 +29,16 @@ const data = {
     },
     {
       title: "Products",
-      url: "/admin/products",
+      url: "/admin/products/all-products",
       icon: Bot,
       items: [
         {
           title: "Add Products",
-          url: "/admin/create-product",
+          url: "/admin/products/create-product",
         },
         {
           title: "All Products",
-          url: "/admin/proudcts",
+          url: "/admin/products/all-products",
         },
       ],
     },
@@ -54,38 +49,9 @@ const data = {
       items: [
         {
           title: "Manage Categories",
-          url: "/admin/category",
+          url: "/admin/categories",
         },
       ],
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Support",
-      url: "#",
-      icon: LifeBuoy,
-    },
-    {
-      title: "Feedback",
-      url: "#",
-      icon: Send,
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
     },
   ],
 };
