@@ -18,6 +18,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // import { toast } from "sonner";
 // import Logo from "@/assets/Logo";
 import { registrationSchema } from "./registerValidation";
+import { registerUser } from "@/services/AuthService";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 // import { registerUser } from "@/services/AuthService";
 // import { useUser } from "@/context/UserContext";
 
@@ -25,6 +28,7 @@ export default function RegisterForm() {
   const form = useForm({
     resolver: zodResolver(registrationSchema),
   });
+  const router = useRouter()
 
   const {
     formState: { isSubmitting },
@@ -38,15 +42,15 @@ export default function RegisterForm() {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-    //   const res = await registerUser(data);
-    //   setIsLoading(true)
-
-    //   if (res?.success) {
-    //     toast.success(res?.message);
-    //   } else {
-    //     toast.error(res?.message);
-    //   }
-    console.log(data);
+      const res = await registerUser(data);
+        console.log(res);
+        
+      if (res?.status) {
+        toast.success(res?.message);
+        router.push('/')
+      } else {
+        toast.error(res?.message);
+      }
     
     } catch (err: any) {
       console.error(err);

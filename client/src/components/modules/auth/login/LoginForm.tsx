@@ -16,7 +16,8 @@ import { toast } from "sonner";
 import { loginSchema } from "./loginValidation";
 import { Button } from "@/components/ui/button";
 // import { loginUser, reCaptchaTokenVerification } from "@/services/AuthService";
-// import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { loginUser } from "@/services/AuthService";
 // import { useUser } from "@/context/UserContext";
 
 export default function LoginForm() {
@@ -24,9 +25,9 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-//   const searchParams = useSearchParams()
-//   const redirect = searchParams.get("redirectPath")
-//   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirect = searchParams.get("redirectPath")
+  const router = useRouter()
 
   const {
     formState: { isSubmitting },
@@ -36,19 +37,21 @@ export default function LoginForm() {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-    //   const res = await loginUser(data);
-    //   setIsLoading(true)
-    //   if (res?.success) {
-    //     toast.success(res?.message);
-    //     if (redirect) {
-    //       router.push(redirect)
-    //     } else {
-    //       router.push('/')
-    //     }
-    //   } else {
-    //     toast.error(res?.message);
-    //   }
-    console.log(data);
+        console.log(data, "from");
+        
+      const res = await loginUser(data);
+      console.log(res, "from res");
+      
+      if (res?.status) {
+        toast.success(res?.message);
+        if (redirect) {
+          router.push(redirect)
+        } else {
+          router.push('/')
+        }
+      } else {
+        toast.error(res?.message);
+      }
     
     } catch (err: any) {
       console.error(err);
