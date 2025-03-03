@@ -1,3 +1,4 @@
+import ManageCategories from "@/components/modules/category";
 import { allCategories } from "@/services/Category";
 
 const ProductCategoryPage = async () => {

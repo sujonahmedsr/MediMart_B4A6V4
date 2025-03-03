@@ -36,13 +36,13 @@ const CreateCategoryModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const formData = new FormData();
-      formData.append("data", JSON.stringify(data));
-      formData.append("icon", imageFiles[0] as File);
+      // const formData = new FormData();
+      // formData.append("data", JSON.stringify(data));
+      // formData.append("icon", imageFiles[0] as File);
 
-      const res = await createCategory(formData);
-
-      if (res?.success) {
+      const res = await createCategory(data);
+      
+      if (res?.status) {
         toast.success(res?.message);
         reset()
       } else {
