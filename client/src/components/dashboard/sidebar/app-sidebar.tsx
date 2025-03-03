@@ -22,33 +22,55 @@ import { NavUser } from "./app-user";
 const data = {
   navMain: [
     {
-      title: "Dashboard",
+      title: "Admin Dashboard",
       url: "/admin",
       icon: SquareTerminal,
       isActive: true,
     },
     {
-      title: "Products",
-      url: "/admin/products/all-products",
+      title: "Manage Medicines",
+      url: "/admin/medicines/all-medicines",
       icon: Bot,
       items: [
         {
-          title: "Add Products",
-          url: "/admin/products/create-product",
+          title: "Add Medicine",
+          url: "/admin/medicines/create-medicines",
         },
         {
-          title: "All Products",
-          url: "/admin/products/all-products",
+          title: "All Medicines",
+          url: "/admin/medicines/all-medicines",
         },
       ],
     },
     {
-      title: "Categories",
+      title: "Manage Categories",
       url: "/admin/categories",
       icon: Bot,
       items: [
         {
-          title: "Manage Categories",
+          title: "All Categories",
+          url: "/admin/categories",
+        },
+      ],
+    },
+    {
+      title: "Manage Orders",
+      url: "/admin/categories",
+      icon: Bot,
+      items: [
+        {
+          title: "All Orders",
+          url: "/admin/orders",
+        },
+      ],
+    },
+    {
+      title: "Manage Users",
+      url: "/admin/categories",
+      icon: Bot,
+      items: [
+        {
+          title: "All Users",
           url: "/admin/categories",
         },
       ],
