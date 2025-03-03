@@ -9,7 +9,7 @@ import { categoryModel } from "../category/categorySchemaModel";
 // create post 
 const createProduct = async (payload: productInterface) => {
     const isCategoryExist = await categoryModel.findById(payload?.category)
-    if(!isCategoryExist){
+    if (!isCategoryExist) {
         throw new AppError(StatusCodes.NOT_FOUND, "Category not existed.")
     }
     const result = await productModel.create(payload)
@@ -18,25 +18,39 @@ const createProduct = async (payload: productInterface) => {
 // get all products 
 
 const getProducts = async (query: Record<string, unknown>) => {
-  const searchableFields = ["description", "name"];
+    const { categories, ...Qquery } = query
 
-  const productQuery = new QuiryBuilder(
-    productModel.find().populate("category", "name icon"),
-    query
-  )
-    .search(searchableFields)
-    .filter() 
-    .sort()
-    .paginate()
-    .fields();
+    let filter: Record<string, unknown> = {}
 
-  const result = await productQuery.modelQuery.lean();
-  const meta = await productQuery.countTotal();
+    // Filter by categories
+    if (categories) {
+        const categoryArray = typeof categories === 'string'
+            ? categories.split(',')
+            : Array.isArray(categories)
+                ? categories
+                : [categories];
+        filter.category = { $in: categoryArray };
+    }
 
-  return {
-    meta,
-    result,
-  };
+    const searchableFields = ["description", "name"];
+
+    const productQuery = new QuiryBuilder(
+        productModel.find(filter).populate("category", "name icon"),
+        Qquery
+    )
+        .search(searchableFields)
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
+
+    const result = await productQuery.modelQuery.lean();
+    const meta = await productQuery.countTotal();
+
+    return {
+        meta,
+        result,
+    };
 };
 
 // get single product 

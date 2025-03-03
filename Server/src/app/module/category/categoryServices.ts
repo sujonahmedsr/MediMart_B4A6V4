@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes"
 import { categoryInterface } from "./categoryInterface"
 import { categoryModel } from "./categorySchemaModel"
 import AppError from "../../errors/AppError"
+import { productModel } from "../products/productsSchmeModel"
 
 const createCategoryDb = async (body: categoryInterface) => {
     const result = await categoryModel.create(body)
@@ -18,6 +19,10 @@ const deleteCategory = async (id: string) => {
     if (!result) {
         throw new AppError(StatusCodes.NOT_FOUND, 'This Category is not found !')
     }
+
+    const categoryProduct = await productModel.findOne({ category: id })
+    if (categoryProduct) throw new AppError(StatusCodes.BAD_REQUEST, "You can not delete the Category. Because the Category is related to products.");
+
     return result
 }
 
