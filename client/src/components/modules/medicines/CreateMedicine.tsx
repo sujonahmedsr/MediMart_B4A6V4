@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,12 +21,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
 import ImagePreviewer from "@/components/ui/core/ImagePreviewer";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { createProduct } from "@/services/medicine";
+import axios from "axios"
 
 // Zod Schema
-type ProductFormType = z.infer<typeof productSchema>;
+type medicineFormType = z.infer<typeof medicineSchema>;
 
-const productSchema = z.object({
-    name: z.string().min(1, "Product name is required"),
+const medicineSchema = z.object({
+    name: z.string().min(1, "medicine name is required"),
     image: z.string().optional(),
     price: z.string().min(1, "Price cannot be negative"),
     category: z.string().min(1, "Category is required"),
@@ -40,6 +45,7 @@ export default function CreateMedicine() {
     const [imageFiles, setImageFiles] = useState<File[] | []>([]);
     const [imagePreview, setImagePreview] = useState<string[] | []>([]);
     const [categories, setCategories] = useState<ICategory[] | []>([])
+    const router = useRouter()
     useEffect(() => {
         const fetchData = async () => {
             const category = await allCategories()
@@ -48,11 +54,8 @@ export default function CreateMedicine() {
         fetchData()
     }, [])
 
-    console.log(imageFiles);
-    
-
-    const form = useForm<ProductFormType>({
-        resolver: zodResolver(productSchema),
+    const form = useForm<medicineFormType>({
+        resolver: zodResolver(medicineSchema),
         defaultValues: {
             name: "",
             image: "",
@@ -66,8 +69,46 @@ export default function CreateMedicine() {
         },
     });
 
-    const onSubmit = (data: ProductFormType) => {
-        console.log("Product Data:", data);
+    console.log(imageFiles[0]);
+
+
+    const onSubmit = async (data: medicineFormType) => {
+        try {
+            let imageUrl = "";
+
+            // Check if image exists and upload only if provided
+            if (imageFiles && imageFiles.length > 0) {
+                const formData = new FormData();
+                formData.append("file", imageFiles[0]);
+                formData.append("upload_preset", "cycle_labs");
+
+                const response = await axios.post(
+                    "https://api.cloudinary.com/v1_1/dvjeaplel/image/upload",
+                    formData
+                );
+
+                imageUrl = response.data.secure_url; // Set image URL if uploaded
+            }
+
+            // Prepare medicine data (with or without image)
+            const medicineData = {
+                ...data,
+                ...(imageUrl && { image: imageUrl }), // Add image only if it exists
+            };
+
+            const res = await createProduct(medicineData);
+            console.log(res);
+
+            if (res?.status) {
+                toast.success(res.message);
+                router.push("/admin/medicines/all-medicines");
+            } else {
+                toast.error(res.message);
+            }
+        } catch (err: any) {
+            console.error(err);
+            toast.error("Something went wrong please try again.");
+        }
     };
 
     return (
@@ -86,9 +127,9 @@ export default function CreateMedicine() {
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Product Name</FormLabel>
+                                    <FormLabel>medicine Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Enter product name" {...field} />
+                                        <Input placeholder="Enter medicine name" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -125,7 +166,7 @@ export default function CreateMedicine() {
                                 >
                                     <FormControl>
                                         <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Select Product Category" />
+                                            <SelectValue placeholder="Select medicine Category" />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -148,7 +189,7 @@ export default function CreateMedicine() {
                             <FormItem className="w-full md:w-1/2">
                                 <FormLabel>Price</FormLabel>
                                 <FormControl>
-                                <Input type="number" placeholder="Enter Price" {...field} value={field.value || ""} />
+                                    <Input type="number" placeholder="Enter Price" {...field} value={field.value || ""} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -223,7 +264,7 @@ export default function CreateMedicine() {
                     )}
                 />
 
-                <Button className="rounded-none" type="submit">Submit Product</Button>
+                <Button className="rounded-none" type="submit">Add Medicine</Button>
             </form>
         </Form>
     );

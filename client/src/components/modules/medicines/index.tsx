@@ -37,30 +37,30 @@ const ManageMedicine = ({
       cell: ({ row }) => (
         <div className="flex items-center space-x-3">
           <Image
-            src={row.original.image}
-            alt={row.original.name}
+            src={row?.original?.image as string}
+            alt={row?.original?.name}
             width={40}
             height={40}
             className="w-8 h-8 rounded-full"
           />
-          <span className="truncate">{row.original.name}</span>
+          <span className="truncate">{row?.original?.name}</span>
         </div>
       ),
     },
     {
       accessorKey: "category",
       header: "Category",
-      cell: ({ row }) => <span>{row.original.category.name}</span>,
+      cell: ({ row }) => <span>{row?.original?.category?.name}</span>,
     },
     {
       accessorKey: "stock",
       header: "Stock",
-      cell: ({ row }) => <span>{row.original.inStock}</span>,
+      cell: ({ row }) => <span>{row?.original?.quantity}</span>,
     },
     {
       accessorKey: "price",
       header: "Price",
-      cell: ({ row }) => <span>$ {row.original.price.toFixed(2)}</span>,
+      cell: ({ row }) => <span>$ {row?.original?.price.toFixed(2)}</span>,
     },
     {
       accessorKey: "action",
@@ -80,7 +80,7 @@ const ManageMedicine = ({
             title="Edit"
             onClick={() =>
               router.push(
-                `/user/shop/products/update-product/${row.original._id}`
+                `/user/shop/products/update-product/${row?.original?._id}`
               )
             }
           >
@@ -90,7 +90,7 @@ const ManageMedicine = ({
           <button
             className="text-gray-500 hover:text-red-500"
             title="Delete"
-            onClick={() => handleDelete(row.original._id)}
+            onClick={() => handleDelete(row?.original?._id)}
           >
             <Trash className="w-5 h-5" />
           </button>
@@ -102,13 +102,14 @@ const ManageMedicine = ({
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-bold">Manage Products</h1>
+        <h1 className="text-xl font-bold">Manage Medicines</h1>
         <div className="flex items-center gap-2">
           <Button
+          className="rounded-none"
             onClick={() => router.push("/admin/medicines/create-medicines")}
             size="sm"
           >
-            Add Product <Plus />
+            Add Medicine <Plus />
           </Button>
         </div>
       </div>
