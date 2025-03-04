@@ -4,7 +4,7 @@ import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
 
 const Category = ({ categories }: { categories: ICategory[] | [] }) => {
-
+    
     return (
         <div className="container mx-auto">
             <h1 className="text-2xl font-bold text-center text-cyan-950">Shop By Category</h1>
@@ -13,7 +13,7 @@ const Category = ({ categories }: { categories: ICategory[] | [] }) => {
                     categories?.map((item: ICategory, index: number) => <div className="mt-4" key={index}>
                         <Card>
                             <CardContent>
-                                <Image src={item?.icon} alt={item.name} className="w-full h-full" width={100} height={100} />
+                                <Image src={item?.icon} alt={item.name} className="w-30 h-30" width={500} height={500} />
                                 <h1 className="text-center mt-2">{item?.name}</h1>
                             </CardContent>
                         </Card>
