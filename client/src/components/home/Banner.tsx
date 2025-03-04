@@ -8,10 +8,10 @@ import {
     CarouselItem,
 } from "@/components/ui/carousel"
 
-import banner1 from '../../assests/banner/web1.webp'
-import banner2 from '../../assests/banner/web2.webp'
-import banner3 from '../../assests/banner/web3.webp'
-import banner4 from '../../assests/banner/web4.webp'
+import banner1 from '@/assests/banner/web1.webp'
+import banner2 from '@/assests/banner/web2.webp'
+import banner3 from '@/assests/banner/web3.webp'
+import banner4 from '@/assests/banner/web4.webp'
 import Image from "next/image"
 
 const banners = [banner4, banner3, banner2, banner1]
@@ -33,7 +33,7 @@ export function Banner() {
                     {banners.map((banner, index) => (
                         <CarouselItem key={index}>
                             <div className="mt-1 border shadow">
-                                <Image src={banner} alt="banner" className="w-full" />
+                                <Image src={banner} alt="banner" className="w-full h-full" width={1920} height={300}/>
                             </div>
                         </CarouselItem>
                     ))}
