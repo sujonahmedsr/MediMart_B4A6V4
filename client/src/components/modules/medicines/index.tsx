@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -8,6 +9,10 @@ import { Button } from "@/components/ui/button";
 import { NMTable } from "@/components/ui/core/NMTable";
 import { IMedicine } from "@/types/medicine";
 import { IMeta } from "@/types/meta";
+import DeleteConfirmationModal from "@/components/ui/core/DeleteConfirmationModal";
+import { toast } from "sonner";
+import { deleteProduct } from "@/services/medicine";
+import { useState } from "react";
 
 const ManageMedicine = ({
   products,
@@ -16,18 +21,41 @@ const ManageMedicine = ({
   products: IMedicine[];
   meta: IMeta;
 }) => {
+  console.log(meta);
+  
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const handleDelete = (data: IMedicine) => {
+    console.log(data);
+    setSelectedId(data?._id);
+    setSelectedItem(data?.name);
+    setModalOpen(true);
+  };
 
-    console.log(products, "from table");
-    
+  const handleDeleteConfirm = async () => {
+    try {
+      if (selectedId) {
+        const res = await deleteProduct(selectedId);
+        console.log(res);
+        if (res?.status === true) {
+          toast.success(res.message);
+          setModalOpen(false);
+        } else {
+          toast.error(res.message);
+        }
+      }
+    } catch (err: any) {
+      console.error(err?.message);
+      toast.error("Something went wrong please try again.");
+    }
+  };
+
 
   const router = useRouter();
 
   const handleView = (product: IMedicine) => {
     console.log("Viewing product:", product);
-  };
-
-  const handleDelete = (productId: string) => {
-    console.log("Deleting product with ID:", productId);
   };
 
   const columns: ColumnDef<IMedicine>[] = [
@@ -90,7 +118,7 @@ const ManageMedicine = ({
           <button
             className="text-gray-500 hover:text-red-500"
             title="Delete"
-            onClick={() => handleDelete(row?.original?._id)}
+            onClick={() => handleDelete(row?.original)}
           >
             <Trash className="w-5 h-5" />
           </button>
@@ -105,7 +133,7 @@ const ManageMedicine = ({
         <h1 className="text-xl font-bold">Manage Medicines</h1>
         <div className="flex items-center gap-2">
           <Button
-          className="rounded-none"
+            className="rounded-none"
             onClick={() => router.push("/admin/medicines/create-medicines")}
             size="sm"
           >
@@ -115,6 +143,12 @@ const ManageMedicine = ({
       </div>
       <NMTable columns={columns} data={products || []} />
       {/* <TablePagination totalPage={meta?.totalPage} /> */}
+      <DeleteConfirmationModal
+        name={selectedItem}
+        isOpen={isModalOpen}
+        onOpenChange={setModalOpen}
+        onConfirm={handleDeleteConfirm}
+      />
     </div>
   );
 };

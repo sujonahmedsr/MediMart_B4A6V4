@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { createCategory } from "@/services/Category";
+import axios from "axios";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -28,8 +29,6 @@ const CreateCategoryModal = () => {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
 
-  console.log(imageFiles);
-  
   const form = useForm();
   const {
     reset,
@@ -38,12 +37,25 @@ const CreateCategoryModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      // const formData = new FormData();
-      // formData.append("data", JSON.stringify(data));
-      // formData.append("icon", imageFiles[0] as File);
+      let imageUrl = ""
+      if (imageFiles && imageFiles.length > 0) {
+        const formData = new FormData()
+        formData.append("file", imageFiles[0])
+        formData.append("upload_preset", "cycle_labs");
 
-      const res = await createCategory(data);
-      
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/dvjeaplel/image/upload",
+          formData
+        );
+        imageUrl = response.data.secure_url;
+      }
+
+      const categoryData = {
+        ...data,
+        icon: imageUrl
+      }
+      const res = await createCategory(categoryData);
+
       if (res?.status) {
         toast.success(res?.message);
         reset()
@@ -58,7 +70,7 @@ const CreateCategoryModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Create Category</Button>
+        <Button className="rounded-none">Create Category</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

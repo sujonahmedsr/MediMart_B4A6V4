@@ -35,8 +35,8 @@ export const createProduct = async (data: FieldValues) => {
     }
 }
 
-// delete category
-export const deleteCategory = async (productId: string): Promise<any> => {
+// delete Product
+export const deleteProduct = async (productId: string): Promise<any> => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_API}/product/${productId}`,
