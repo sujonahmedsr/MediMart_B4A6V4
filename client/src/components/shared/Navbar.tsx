@@ -16,6 +16,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SearchBar from "./SearchBar";
+import { IUser } from "@/types/user";
 
 const navItems = [
     {
@@ -36,8 +37,10 @@ const navItems = [
     },
 ]
 
-const Navbar = () => {
+const Navbar = ({user}: {user: IUser}) => {
     const locatoin = usePathname()
+    console.log(user);
+    
     return (
         <section className="p-4 border-b bg-white sticky top-0 z-10 transition-all">
             <div className="container mx-auto">
