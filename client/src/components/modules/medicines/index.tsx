@@ -13,6 +13,7 @@ import DeleteConfirmationModal from "@/components/ui/core/DeleteConfirmationModa
 import { toast } from "sonner";
 import { deleteProduct } from "@/services/medicine";
 import { useState } from "react";
+import TablePagination from "@/components/ui/core/TablePagination";
 
 const ManageMedicine = ({
   products,
@@ -142,7 +143,7 @@ const ManageMedicine = ({
         </div>
       </div>
       <NMTable columns={columns} data={products || []} />
-      {/* <TablePagination totalPage={meta?.totalPage} /> */}
+      <TablePagination totalPage={meta?.totalPage} />
       <DeleteConfirmationModal
         name={selectedItem}
         isOpen={isModalOpen}

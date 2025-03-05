@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server"
 
@@ -5,9 +6,9 @@ import { revalidateTag } from "next/cache"
 import { cookies } from "next/headers"
 import { FieldValues } from "react-hook-form"
 
-export const allProducts = async () => {
+export const allProducts = async (page?: string, limit?: string, query?: { [key: string]: string | string[] | undefined }) => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product?limit=${limit}&page=${page}`, {
             next: {
                 tags: ["PRODUCT"],
             }

@@ -7,10 +7,9 @@ const ManageProductsPage = async ({
   searchParams: Promise<{ page: string }>;
 }) => {
   const { page } = await searchParams;
-  console.log(page);
   
 
-  const data = await allProducts();
+  const data = await allProducts(page);
   
   return (
     <div>
