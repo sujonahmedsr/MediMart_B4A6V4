@@ -10,12 +10,15 @@ import DeleteConfirmationModal from "@/components/ui/core/DeleteConfirmationModa
 import { useState } from "react";
 import { deleteCategory } from "@/services/Category";
 import { toast } from "sonner";
+import TablePagination from "@/components/ui/core/TablePagination";
+import { IMeta } from "@/types/meta";
 
 type TCategoriesProps = {
     categories: ICategory[];
+    meta: IMeta
 };
 
-const ManageCategories = ({ categories }: TCategoriesProps) => {
+const ManageCategories = ({ categories, meta }: TCategoriesProps) => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -25,6 +28,9 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
         setSelectedItem(data?.name);
         setModalOpen(true);
     };
+
+    console.log(categories);
+    
 
     const handleDeleteConfirm = async () => {
         try {
@@ -89,13 +95,14 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
                 <h1 className="text-xl font-bold">Manage Categories</h1>
                 <CreateCategoryModal />
             </div>
-            <NMTable data={categories} columns={columns} />
+            <NMTable data={categories || []} columns={columns} />
             <DeleteConfirmationModal
                 name={selectedItem}
                 isOpen={isModalOpen}
                 onOpenChange={setModalOpen}
                 onConfirm={handleDeleteConfirm}
             />
+            <TablePagination totalPage={meta?.totalPage}/>
         </div>
     );
 };

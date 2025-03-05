@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { categoryController } from "./categoryController";
+import authMid from "../Authentication/authMid";
 
 const categoryRoute = Router()
 
-categoryRoute.post('/create', categoryController.createCategory)
+categoryRoute.post('/create', authMid("admin"), categoryController.createCategory)
 categoryRoute.get('/', categoryController.getAllCategory)
-categoryRoute.delete('/:id', categoryController.deleteCategory)
+categoryRoute.delete('/:id', authMid("admin"), categoryController.deleteCategory)
 
 export default categoryRoute

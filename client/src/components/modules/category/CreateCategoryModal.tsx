@@ -37,7 +37,7 @@ const CreateCategoryModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      let imageUrl = ""
+      let imageUrl = null
       if (imageFiles && imageFiles.length > 0) {
         const formData = new FormData()
         formData.append("file", imageFiles[0])
@@ -55,7 +55,8 @@ const CreateCategoryModal = () => {
         icon: imageUrl
       }
       const res = await createCategory(categoryData);
-
+      console.log(res, 'category');
+      
       if (res?.status) {
         toast.success(res?.message);
         reset()

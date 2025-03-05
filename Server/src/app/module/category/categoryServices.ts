@@ -3,15 +3,23 @@ import { categoryInterface } from "./categoryInterface"
 import { categoryModel } from "./categorySchemaModel"
 import AppError from "../../errors/AppError"
 import { productModel } from "../products/productsSchmeModel"
+import QuiryBuilder from "../../QuiryBuilder/QuiryBuilder"
 
 const createCategoryDb = async (body: categoryInterface) => {
     const result = await categoryModel.create(body)
     return result
 }
 
-const getAllCategory = async () => {
-    const result = await categoryModel.find()
-    return result
+const getAllCategory = async (query: Record<string, unknown>) => {
+    const categoryQuery = new QuiryBuilder(categoryModel.find(), query)
+        .sort()
+        .paginate()
+    const result = await categoryQuery.modelQuery.lean()
+    const meta = await categoryQuery.countTotal();
+    return {
+        meta,
+        result,
+    };
 }
 
 const deleteCategory = async (id: string) => {

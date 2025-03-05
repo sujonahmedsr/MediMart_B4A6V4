@@ -13,7 +13,7 @@ const createCategory = asyncFunc(async (req, res) => {
 })
 
 const getAllCategory = asyncFunc (async (req, res) => {
-    const result = await categoryServices.getAllCategory()
+    const result = await categoryServices.getAllCategory(req.query)
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         message: 'Categories retrieved successfully',
