@@ -15,11 +15,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { loginSchema } from "./loginValidation";
 import { Button } from "@/components/ui/button";
-// import { loginUser, reCaptchaTokenVerification } from "@/services/AuthService";
 import { useRouter, useSearchParams } from "next/navigation";
 import { loginUser } from "@/services/AuthService";
 import { useUser } from "@/userContextApi/UserProvider";
-// import { useUser } from "@/context/UserContext";
 
 export default function LoginForm() {
   const form = useForm({
@@ -38,13 +36,14 @@ export default function LoginForm() {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-        console.log(data, "from");
-        
+      console.log(data, "from");
+
       const res = await loginUser(data);
       setIsLoading(true)
-      
+
       if (res?.status) {
         toast.success(res?.message);
+
         if (redirect) {
           router.push(redirect)
         } else {
@@ -53,7 +52,7 @@ export default function LoginForm() {
       } else {
         toast.error(res?.message);
       }
-    
+
     } catch (err: any) {
       console.error(err);
       toast.error("Login Failed Try Again.")
