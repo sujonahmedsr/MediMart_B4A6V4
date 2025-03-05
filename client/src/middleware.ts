@@ -6,12 +6,16 @@ type Role = keyof typeof roleBasedPrivateRoutes
 const authRoutes = ['/login', '/register']
 
 const roleBasedPrivateRoutes = {
-    admin: [/^\/admin/]
+    admin: [/^\/admin(\/.*)?$/],
+    customer: [],
 }
 
 export const middleware = async (request: NextRequest) => {
     const { pathname } = request.nextUrl
     const userInfo = await getCurrentUser()
+
+    console.log(userInfo, 'from user');
+    
 
     if (!userInfo) {
         if (authRoutes.includes(pathname)) {
@@ -20,6 +24,10 @@ export const middleware = async (request: NextRequest) => {
             return NextResponse.redirect(new URL(`http://localhost:3000/login?redirectPath=${pathname}`, request.url))
         }
     }
+
+    if (userInfo?.role === "customer" && /^\/admin(\/.*)?$/.test(pathname)) {
+        return NextResponse.redirect(new URL("/", request.url));
+      }
 
     if (userInfo?.role && roleBasedPrivateRoutes[userInfo?.role as Role]) {
         const routes = roleBasedPrivateRoutes[userInfo?.role as Role]
@@ -36,6 +44,6 @@ export const config = {
         '/login',
         '/register',
         '/admin',
-        "/admin/:page",
+        "/admin/:path*",
     ]
 }

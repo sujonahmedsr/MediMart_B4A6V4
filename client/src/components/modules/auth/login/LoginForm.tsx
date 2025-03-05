@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 // import { loginUser, reCaptchaTokenVerification } from "@/services/AuthService";
 import { useRouter, useSearchParams } from "next/navigation";
 import { loginUser } from "@/services/AuthService";
+import { useUser } from "@/userContextApi/UserProvider";
 // import { useUser } from "@/context/UserContext";
 
 export default function LoginForm() {
@@ -33,14 +34,14 @@ export default function LoginForm() {
     formState: { isSubmitting },
   } = form;
 
-//   const { setIsLoading } = useUser()
+  const { setIsLoading } = useUser()
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
         console.log(data, "from");
         
       const res = await loginUser(data);
-      console.log(res, "from res");
+      setIsLoading(true)
       
       if (res?.status) {
         toast.success(res?.message);

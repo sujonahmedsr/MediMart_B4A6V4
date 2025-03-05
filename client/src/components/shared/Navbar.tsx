@@ -1,5 +1,5 @@
 "use client"
-import { LucideShoppingCart, Menu, LucidePackageCheck, User } from "lucide-react";
+import { LucideShoppingCart, Menu, LucidePackageCheck, LogOut, User } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -14,9 +14,20 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import SearchBar from "./SearchBar";
-import { IUser } from "@/types/user";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { logout } from "@/services/AuthService";
+import { protectedRoutes } from "@/constants";
+import { useUser } from "@/userContextApi/UserProvider";
 
 const navItems = [
     {
@@ -37,10 +48,18 @@ const navItems = [
     },
 ]
 
-const Navbar = ({user}: {user: IUser}) => {
+const Navbar = () => {
+    const { user, setIsLoading } = useUser()
     const locatoin = usePathname()
-    console.log(user);
-    
+    const router = useRouter()
+    const handleLogOut = () => {
+        logout()
+        setIsLoading(true)
+        if (protectedRoutes.some((route) => locatoin.match(route))) {
+            router.push("/");
+        }
+    }
+
     return (
         <section className="p-4 border-b bg-white sticky top-0 z-10 transition-all">
             <div className="container mx-auto">
@@ -54,7 +73,7 @@ const Navbar = ({user}: {user: IUser}) => {
                     <SearchBar />
                     <div className="flex items-center gap-5">
                         <Link href={'/track-order'}>
-                            <Button variant="outline" className="text-blue-700 pointer-events-none rounded duration-300 flex items-center gap-2">
+                            <Button variant="outline" className=" pointer-events-none rounded duration-300 flex items-center gap-2">
                                 <LucidePackageCheck className="size-5" /> Track Order
                             </Button>
                         </Link>
@@ -64,11 +83,42 @@ const Navbar = ({user}: {user: IUser}) => {
                                 <div className="absolute -top-3 -right-2 text-blue-700">0</div>
                             </div>
                         </Link>
-                        <Link href={'/login'}>
-                            <Button variant="outline" className="text-blue-700 pointer-events-none rounded duration-300 flex items-center gap-2">
-                                <User className="size-5" /> Sign In
-                            </Button>
-                        </Link>
+                        {user ? (
+                            <>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger>
+                                        <Avatar>
+                                            <AvatarImage src="https://github.com/shadcn.png" />
+                                            <AvatarFallback>User</AvatarFallback>
+                                        </Avatar>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent>
+                                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem>Profile</DropdownMenuItem>
+                                        {
+                                            user?.role === 'admin' && <Link href={'/admin'}>
+                                                <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                                            </Link>
+                                        }
+                                        <DropdownMenuItem>My Shop</DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem
+                                            onClick={handleLogOut}
+                                        >
+
+                                            <Button> <LogOut /><span>Log Out</span></Button>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </>
+                        ) : (
+                            <Link href="/login">
+                                <Button className="rounded cursor-pointer flex items-center gap-2" variant="outline">
+                                    <User className="size-5" /> Login
+                                </Button>
+                            </Link>
+                        )}
                     </div>
 
                 </nav>

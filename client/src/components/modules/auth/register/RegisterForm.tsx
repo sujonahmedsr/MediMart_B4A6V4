@@ -14,15 +14,12 @@ import { Input } from "@/components/ui/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-// import { toast } from "sonner";
-// import Logo from "@/assets/Logo";
 import { registrationSchema } from "./registerValidation";
 import { registerUser } from "@/services/AuthService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-// import { registerUser } from "@/services/AuthService";
-// import { useUser } from "@/context/UserContext";
+import { useUser } from "@/userContextApi/UserProvider";
+
 
 export default function RegisterForm() {
   const form = useForm({
@@ -36,14 +33,13 @@ export default function RegisterForm() {
 
   const password = form.watch("password");
   const passwordConfirm = form.watch("passwordConfirm");
-  //   console.log(password, passwordConfirm);
 
-//   const { setIsLoading } = useUser()
+  const { setIsLoading } = useUser()
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const res = await registerUser(data);
-        console.log(res);
+      setIsLoading(true)
         
       if (res?.status) {
         toast.success(res?.message);

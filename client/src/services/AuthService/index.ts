@@ -66,3 +66,7 @@ export const getCurrentUser = async () => {
         return null;
     }
 };
+
+export const logout = async () => {
+    (await cookies()).delete("accessToken");
+  };
