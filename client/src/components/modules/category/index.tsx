@@ -55,6 +55,7 @@ const ManageCategories = ({ categories, meta }: TCategoriesProps) => {
             header: () => <div>Category Image</div>,
             cell: ({ row }) => (
                 <div className="flex items-center space-x-3">
+                    <h1 className="text-lg font-semibold">{row.index + 1}.</h1>
                     <Image
                         src={row.original.icon}
                         alt={row.original.name}

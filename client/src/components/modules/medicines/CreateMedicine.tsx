@@ -48,8 +48,8 @@ export default function CreateMedicine() {
     const router = useRouter()
     useEffect(() => {
         const fetchData = async () => {
-            const category = await allCategories()
-            setCategories(category?.data)
+            const category = await allCategories(undefined,'18')
+            setCategories(category?.data?.result)
         }
         fetchData()
     }, [])
