@@ -64,15 +64,16 @@ export default function UpdateMedicine({ product }: { product: IMedicine }) {
         defaultValues: {
             name: product?.name || "",
             image: product?.image || "",
-            price: product?.price || "",
+            price: typeof product?.price === 'string' ? parseFloat(product?.price) : product?.price || "",
             category: product?.category || "",
             description: product?.description || "",
-            quantity: product?.quantity || "",
-            expireDate: product?.expireDate || "",
+            quantity: typeof product?.quantity === 'string' ? parseInt(product?.quantity) : product?.quantity || "",
+            expireDate: product?.expireDate ? new Date(product?.expireDate).toISOString().split('T')[0] : "", // Convert Date to string in "YYYY-MM-DD"
             manufacturerDetails: product?.manufacturerDetails || "",
             requiredPrescription: product?.requiredPrescription || false,
         },
     });
+    
 
     const onSubmit = async (data: medicineFormType) => {
         try {
