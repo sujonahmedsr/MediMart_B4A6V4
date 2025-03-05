@@ -2,6 +2,7 @@
 "use server"
 
 import { revalidateTag } from "next/cache"
+import { cookies } from "next/headers"
 import { FieldValues } from "react-hook-form"
 
 export const allProducts = async () => {
@@ -24,6 +25,39 @@ export const createProduct = async (data: FieldValues) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: (await cookies()).get("accessToken")!.value,
+            },
+            body: JSON.stringify(data)
+        })
+        const result = res.json()
+        revalidateTag("PRODUCT");
+        return result
+    } catch (error: any) {
+        throw new Error(error?.message)
+    }
+}
+
+export const singleProduct = async (id: string) => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product/${id}`, {
+            next: {
+                tags: ["PRODUCT"],
+            }
+        })
+        const result = res.json()
+        return result
+    } catch (error: any) {
+        throw new Error(error?.message)
+    }
+}
+
+export const updateProduct = async (id: string,data: FieldValues) => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: (await cookies()).get("accessToken")!.value,
             },
             body: JSON.stringify(data)
         })
@@ -42,9 +76,9 @@ export const deleteProduct = async (productId: string): Promise<any> => {
         `${process.env.NEXT_PUBLIC_BASE_API}/product/${productId}`,
         {
           method: "DELETE",
-        //   headers: {
-        //     Authorization: (await cookies()).get("accessToken")!.value,
-        //   },
+          headers: {
+            Authorization: (await cookies()).get("accessToken")!.value,
+          },
         }
       );
       revalidateTag("PRODUCT");

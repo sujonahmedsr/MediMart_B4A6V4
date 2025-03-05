@@ -108,7 +108,7 @@ const ManageMedicine = ({
             title="Edit"
             onClick={() =>
               router.push(
-                `/user/shop/products/update-product/${row?.original?._id}`
+                `/admin/medicines/update-medicine/${row?.original?._id}`
               )
             }
           >

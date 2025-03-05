@@ -3,7 +3,7 @@ import { ICategory } from "./category";
 export interface IMedicine {
     _id: string,
     name: string,
-    image?: string,
+    image?: string | undefined,
     price: number,
     category: ICategory,
     description: string,
