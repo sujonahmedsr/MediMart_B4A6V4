@@ -22,6 +22,14 @@ const getAllCategory = async (query: Record<string, unknown>) => {
     };
 }
 
+const singleCategory = async (id: string) => {
+    const result = await categoryModel.findById(id)
+    if (!result) {
+        throw new AppError(StatusCodes.NOT_FOUND, 'This Category product is not found !')
+    }
+    return result
+}
+
 const deleteCategory = async (id: string) => {
     const categoryProduct = await productModel.findOne({ category: id })
     if (categoryProduct) throw new AppError(StatusCodes.BAD_REQUEST, "You can not delete the Category. Because the Category is related to products.");
@@ -37,5 +45,6 @@ const deleteCategory = async (id: string) => {
 export const categoryServices = {
     createCategoryDb,
     getAllCategory,
-    deleteCategory
+    deleteCategory,
+    singleCategory
 }

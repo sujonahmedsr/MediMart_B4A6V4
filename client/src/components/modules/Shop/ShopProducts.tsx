@@ -3,17 +3,26 @@ import { IMedicine } from "@/types/medicine";
 import ProductCard from "./ProductCard";
 import TablePagination from "@/components/ui/core/TablePagination";
 import { IMeta } from "@/types/meta";
+import { ICategory } from "@/types/category";
+import SearchByCategory from "./SearchByCategory";
 
-const ShopProducts = ({ products, meta }: { products: IMedicine[], meta: IMeta }) => {
+const ShopProducts = ({ category, products, meta }: { category: ICategory[], products: IMedicine[], meta: IMeta }) => {
 
     return (
-        <div>
-            <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-5">
-                {
-                    products?.map((product, index) => <ProductCard key={index + 1} product={product} />)
-                }
+        <div className="grid lg:grid-cols-12 md:grid-cols-8 grid-cols-1 gap-10">
+            <div className="col-span-3">
+                <SearchByCategory category={category} />
             </div>
-            <TablePagination totalPage={meta?.totalPage}/>
+            <div className="col-span-9">
+                <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
+                    {
+                        products?.map((product, index) => <ProductCard key={index + 1} product={product} />)
+                    }
+                </div>
+                <div className="flex items-center justify-end">
+                    <TablePagination totalPage={meta?.totalPage} />
+                </div>
+            </div>
         </div>
     );
 };

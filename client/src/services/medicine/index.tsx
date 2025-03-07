@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server"
 
@@ -8,7 +7,14 @@ import { FieldValues } from "react-hook-form"
 
 export const allProducts = async (page?: string, limit?: string, query?: { [key: string]: string | string[] | undefined }) => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product?limit=${limit}&page=${page}`, {
+
+        const params = new URLSearchParams()
+
+        if(query?.cat_id){
+            params.append("category", query?.cat_id.toString())
+        }
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product?limit=${limit}&page=${page}&${params}`, {
             next: {
                 tags: ["PRODUCT"],
             }

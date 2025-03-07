@@ -1,9 +1,8 @@
 "use client"
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ICategory } from "@/types/category";
-import Image from "next/image";
 import Link from "next/link";
+import CardCategory from "../category/CardCategory";
 
 const Category = ({ categories }: { categories: ICategory[] | [] }) => {
 
@@ -14,14 +13,7 @@ const Category = ({ categories }: { categories: ICategory[] | [] }) => {
             </Link>
             <div className="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-5">
                 {
-                    categories?.map((item: ICategory, index: number) => <div className="mt-4" key={index}>
-                        <Card className="hover:shadow-2xs rounded">
-                            <CardContent>
-                                <Image src={item?.icon} alt={item.name} className="w-12 h-12 mx-auto" width={100} height={100} />
-                                <h1 className="text-center mt-2 font-semibold">{item?.name}</h1>
-                            </CardContent>
-                        </Card>
-                    </div>)
+                    categories?.map((item: ICategory, index: number) => <CardCategory item={item} key={index + 1} />)
                 }
             </div>
             <div className="mx-auto mt-10 text-center">

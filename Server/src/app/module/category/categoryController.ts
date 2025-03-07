@@ -20,6 +20,15 @@ const getAllCategory = asyncFunc (async (req, res) => {
         data: result
     })
 })
+const singleCategory = asyncFunc (async (req, res) => {
+    const {id} = req.params
+    const result = await categoryServices.singleCategory(id)
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        message: 'Categories retrieved successfully',
+        data: result
+    })
+})
 
 const deleteCategory = asyncFunc (async (req, res) => {
     const {id} = req.params
@@ -34,5 +43,6 @@ const deleteCategory = asyncFunc (async (req, res) => {
 export const categoryController = {
     createCategory,
     getAllCategory,
-    deleteCategory
+    deleteCategory,
+    singleCategory
 }
