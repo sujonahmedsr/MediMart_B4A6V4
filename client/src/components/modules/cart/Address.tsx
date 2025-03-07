@@ -24,7 +24,7 @@ export default function Address() {
   };
 
   return (
-    <div className="border rounded col-span-4 p-5">
+    <div className="border rounded p-5">
       <div className="flex flex-col justify-between h-full">
         <h1 className="text-2xl font-bold">Address</h1>
         <div className="mt-5">

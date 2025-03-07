@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/lib/currencyFormatter";
 import { CartProduct, decrementOrderQuantity, incrementOrderQuantity, removeProduct } from "@/lib/redux/features/cart/cartSlice";

@@ -2,7 +2,7 @@ import { LucideSearch } from "lucide-react";
 
 const SearchBar = () => {
     return (
-        <div className="flex items-center md:w-1/3 w-full md:mt-0 mt-2 relative">
+        <div className="flex items-center lg:w-1/3 w-full lg:mt-0 mt-2 relative">
             <input
                 type="text"
                 placeholder="Search products..."

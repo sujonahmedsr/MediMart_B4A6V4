@@ -14,9 +14,6 @@ export const middleware = async (request: NextRequest) => {
     const { pathname } = request.nextUrl
     const userInfo = await getCurrentUser()
 
-    console.log(userInfo, 'from user');
-    
-
     if (!userInfo) {
         if (authRoutes.includes(pathname)) {
             return NextResponse.next()
@@ -43,7 +40,6 @@ export const config = {
     matcher: [
         '/login',
         '/register',
-        "/cart",
         '/admin',
         "/admin/:path*",
     ]

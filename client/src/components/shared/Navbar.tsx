@@ -28,6 +28,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { logout } from "@/services/AuthService";
 import { protectedRoutes } from "@/constants";
 import { useUser } from "@/userContextApi/UserProvider";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { orderedProductsSelector } from "@/lib/redux/features/cart/cartSlice";
 
 const navItems = [
     {
@@ -49,6 +51,7 @@ const navItems = [
 ]
 
 const Navbar = () => {
+    const products = useAppSelector(orderedProductsSelector)
     const { user, setIsLoading } = useUser()
     const locatoin = usePathname()
     const router = useRouter()
@@ -80,7 +83,7 @@ const Navbar = () => {
                         <Link href={'/cart'}>
                             <Button variant="outline"  className="relative pointer-events-none rounded duration-300 flex items-center gap-2">
                                 <LucideShoppingCart className="size-6" />
-                                <div className="absolute -top-2 right-0 text-[10px] w-4 h-4 bg-cyan-600 border text-white text-center rounded-full ">0</div>
+                                <div className="absolute -top-2 right-0 text-[10px] w-4 h-4 bg-cyan-600 border text-white text-center rounded-full ">{products?.length}</div>
                             </Button>
                         </Link>
                         {user ? (

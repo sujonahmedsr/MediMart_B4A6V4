@@ -11,7 +11,7 @@ const infoObj = [
         img: upload,
         buttonText: 'Upload Now',
         buttonColor: 'bg-cyan-950',
-        link: '/upload'
+        link: '/'
     },
     {
         title: 'Healthcare Products',
@@ -36,13 +36,13 @@ const Info = () => {
                 {infoObj.map((item, index) => (
                     <div
                         key={index}
-                        className="flex items-center justify-between gap-6 bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 border"
+                        className="flex items-center justify-between gap-6 bg-white p-6 rounded shadow-lg hover:shadow-xl transition-shadow duration-300 border"
                     >
                         <div className="text-start">
                             <h1 className="text-xl font-semibold mb-4">{item.title}</h1>
                             <a href={item.link}>
                                 <Button
-                                    className={`${item.buttonColor} text-white hover:opacity-90 transition-opacity duration-300 cursor-pointer`}
+                                    className={`${item.buttonColor} text-white hover:opacity-90 transition-opacity duration-300 cursor-pointer rounded`}
                                 >
                                     {item.buttonText}
                                 </Button>

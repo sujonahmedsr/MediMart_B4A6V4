@@ -8,7 +8,7 @@ export default async function Home() {
   return (
     <div className="md:space-y-16 space-y-8">
       <Banner />
-      <div className="px-2 md:space-y-16 space-y-8">
+      <div className="px-4 md:space-y-16 space-y-8">
         <Info />
         <Category categories={categories?.data?.result} />
       </div>

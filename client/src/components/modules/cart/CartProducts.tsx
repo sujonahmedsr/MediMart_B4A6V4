@@ -12,7 +12,7 @@ export default function CartProducts() {
   const products = useAppSelector(orderedProductsSelector);
 
   return (
-    <div className="border rounded col-span-8 h-full row-span-3 p-10 space-y-5">
+    <div className="border rounded h-full p-10 space-y-5">
       {products.length === 0 && (
         <div className="text-center text-gray-500">
           <p className="text-lg font-semibold">Your cart is empty</p>

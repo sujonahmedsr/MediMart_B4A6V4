@@ -1,6 +1,6 @@
 import { IMedicine } from "@/types/medicine";
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../../stroe";
+import { RootState } from "../../store";
 
 export interface CartProduct extends IMedicine {
     orderQuantity: number;

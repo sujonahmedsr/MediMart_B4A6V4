@@ -39,7 +39,7 @@ export function Banner() {
                     ))}
                 </CarouselContent>
             </Carousel>
-            <div className="mt-5 container mx-auto text-center">
+            <div className="p-4 container mx-auto text-center">
                 <h1 className="text-2xl font-bold text-cyan-900">Medi Mart: The Leading Online Pharmacy and Healthcare Platform of Bangladesh.</h1>
             </div>
         </div>
