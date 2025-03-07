@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { IMedicine } from "@/types/medicine";
-import { CheckCheckIcon, Cross, CrossIcon, X } from "lucide-react";
+import { CheckCheckIcon, X } from "lucide-react";
 import Image from "next/image";
 
 export default function ProductDetails({ product }: { product: IMedicine }) {
@@ -26,7 +26,7 @@ export default function ProductDetails({ product }: { product: IMedicine }) {
             <div className="relative p-4">
               <div className="absolute right-0 top-20">
                 {
-                  product?.requiredPrescription ? <Button variant={"outline"}>Prescription Required <CheckCheckIcon /> </Button> : <Button variant={"destructive"} className="rounded-none">Prescription No Need <X size={"5"}/></Button>
+                  product?.requiredPrescription ? <Button variant={"outline"}>Prescription Required <CheckCheckIcon /> </Button> : <Button variant={"destructive"} className="rounded-none">Prescription No Need <X size={"5"} /></Button>
                 }
               </div>
               <h1 className="text-3xl font-bold mb-4">{product?.name}</h1>
@@ -52,6 +52,11 @@ export default function ProductDetails({ product }: { product: IMedicine }) {
               <div className="mt-6 flex gap-4">
                 <Button variant="outline" className="rounded-none">Add to Cart</Button>
                 <Button variant="outline" className="rounded-none bg-cyan-950 hover:bg-cyan-800 duration-300 hover:text-white transition-all text-white cursor-pointer">Buy Now</Button>
+              </div>
+
+              <div className="border-2 border-cyan-500 text-sm text-cyan-800 rounded p-4 space-y-1 mt-5">
+                <p>Delivery service is available all over <span className="text-cyan-950 text-base font-semibold">Bangladesh</span>.</p>
+                <p>For <span className="text-cyan-950 text-base font-semibold">urgent delivery</span> service, Please contact us.</p>
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
-import { Banner } from "@/components/home/Banner";
-import Category from "@/components/home/Category";
-import Info from "@/components/home/Info";
+import { Banner } from "@/components/modules/home/Banner";
+import Category from "@/components/modules/home/Category";
+import Info from "@/components/modules/home/Info";
 import { allCategories } from "@/services/Category";
 
 export default async function Home() {

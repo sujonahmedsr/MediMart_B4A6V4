@@ -1,9 +1,9 @@
 "use client"
-import upload from '../../assests/info/upload-prescription.png';
-import pngwing from '../../assests/info/pngwing.png';
-import help from '../../assests/info/help-line.png';
-import { Button } from '../ui/button';
+import upload from '@/assests/info/upload-prescription.png';
+import pngwing from '@/assests/info/pngwing.png';
+import help from '@/assests/info/help-line.png';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 
 const infoObj = [
     {
