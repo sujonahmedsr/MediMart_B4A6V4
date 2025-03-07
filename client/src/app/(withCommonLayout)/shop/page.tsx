@@ -1,7 +1,7 @@
 
 const page = () => {
     return (
-        <div>
+        <div className="container mx-auto p-4">
             All Products
         </div>
     );

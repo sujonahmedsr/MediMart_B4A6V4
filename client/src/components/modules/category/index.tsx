@@ -23,13 +23,10 @@ const ManageCategories = ({ categories, meta }: TCategoriesProps) => {
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
     const handleDelete = (data: ICategory) => {
-        console.log(data);
         setSelectedId(data?._id);
         setSelectedItem(data?.name);
         setModalOpen(true);
     };
-
-    console.log(categories);
     
 
     const handleDeleteConfirm = async () => {

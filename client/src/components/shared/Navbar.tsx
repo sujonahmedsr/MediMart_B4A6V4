@@ -72,16 +72,16 @@ const Navbar = () => {
                     </div>
                     <SearchBar />
                     <div className="flex items-center gap-5">
-                        <Link href={'/track-order'}>
+                        <Link href={'/shop'}>
                             <Button variant="outline" className=" pointer-events-none rounded duration-300 flex items-center gap-2">
-                                <LucidePackageCheck className="size-5" /> Track Order
+                                <LucidePackageCheck className="size-5" /> Shop Now
                             </Button>
                         </Link>
                         <Link href={'/cart'}>
-                            <div className="relative">
+                            <Button variant="outline"  className="relative pointer-events-none rounded duration-300 flex items-center gap-2">
                                 <LucideShoppingCart className="size-6" />
-                                <div className="absolute -top-3 -right-2 text-blue-700">0</div>
-                            </div>
+                                <div className="absolute -top-2 right-0 text-[10px] w-4 h-4 bg-cyan-600 border text-white text-center rounded-full ">0</div>
+                            </Button>
                         </Link>
                         {user ? (
                             <>
