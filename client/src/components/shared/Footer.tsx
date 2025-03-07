@@ -71,7 +71,7 @@ const Footer = () => {
                                 </li>
                             </ul>
                         </div>
-                        <div className="grid grid-cols-3 gap-6 w-full">
+                        <div className="grid grid-cols-3 gap-6 w-full mt-4">
                             {sections.map((section, sectionIdx) => (
                                 <div key={sectionIdx}>
                                     <h3 className="mb-6 font-bold">{section.title}</h3>
@@ -90,7 +90,7 @@ const Footer = () => {
                         </div>
                     </div>
                     <div className="mt-20 flex flex-col justify-between gap-4 border-t pt-8 text-center text-sm font-medium text-muted-foreground lg:flex-row lg:items-center lg:text-left">
-                        <p>© 2024 Shadcnblocks. All rights reserved.</p>
+                        <p>© 2025 <a href="https://github.com/sujonahmedsr" target="_blank" className="text-cyan-950 hover:underline">shofiqul Islam</a>. All rights reserved.</p>
                         <ul className="flex justify-center gap-4 lg:justify-start">
                             <li className="hover:text-primary">
                                 <a href="#"> Terms and Conditions</a>

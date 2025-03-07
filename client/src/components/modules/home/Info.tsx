@@ -18,7 +18,7 @@ const infoObj = [
         img: pngwing,
         buttonText: 'Order Now',
         buttonColor: 'bg-yellow-950',
-        link: '/products'
+        link: '/shop'
     },
     {
         title: 'Help Line',
