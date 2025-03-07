@@ -62,7 +62,6 @@ const Navbar = () => {
             router.push("/");
         }
     }
-
     return (
         <section className="p-4 border-b bg-white sticky top-0 z-10 transition-all">
             <div className="container mx-auto">
@@ -81,7 +80,7 @@ const Navbar = () => {
                             </Button>
                         </Link>
                         <Link href={'/cart'}>
-                            <Button variant="outline"  className="relative pointer-events-none rounded duration-300 flex items-center gap-2">
+                            <Button variant="outline" className="relative pointer-events-none rounded duration-300 flex items-center gap-2">
                                 <LucideShoppingCart className="size-6" />
                                 <div className="absolute -top-2 right-0 text-[10px] w-4 h-4 bg-cyan-600 border text-white text-center rounded-full ">{products?.length}</div>
                             </Button>
@@ -91,20 +90,24 @@ const Navbar = () => {
                                 <DropdownMenu>
                                     <DropdownMenuTrigger>
                                         <Avatar>
-                                            <AvatarImage src="https://github.com/shadcn.png" />
+                                            <AvatarImage src={user?.image || "https://github.com/shadcn.png"} />
                                             <AvatarFallback>User</AvatarFallback>
                                         </Avatar>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent className="w-40 mt-5">
-                                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                        <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem>Profile</DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <Link href={'/profile'}>
+                                                Profile
+                                            </Link>
+                                        </DropdownMenuItem>
                                         {
                                             user?.role === 'admin' && <Link href={'/admin'}>
                                                 <DropdownMenuItem>Dashboard</DropdownMenuItem>
                                             </Link>
                                         }
-                                        <DropdownMenuItem>My Shop</DropdownMenuItem>
+                                        <DropdownMenuItem>My Orders</DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem
                                             onClick={handleLogOut}
