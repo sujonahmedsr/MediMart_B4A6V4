@@ -1,8 +1,11 @@
+import ShopProducts from "@/components/modules/Shop/ShopProducts";
+import { allProducts } from "@/services/medicine";
 
-const page = () => {
+const page = async () => {
+    const products = await allProducts()
     return (
         <div className="container mx-auto p-4">
-            All Products
+            <ShopProducts products={products?.data?.result} />
         </div>
     );
 };

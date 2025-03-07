@@ -1,0 +1,70 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { IMedicine } from "@/types/medicine";
+import { CheckCheckIcon, Cross, CrossIcon, X } from "lucide-react";
+import Image from "next/image";
+
+export default function ProductDetails({ product }: { product: IMedicine }) {
+
+  return (
+    <div>
+      <Card className="rounded border-none shadow-none">
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Product Image */}
+            <div className="border p-4">
+              <Image
+                src={product?.image as string}
+                alt={product?.name}
+                width={500}
+                height={500}
+                className="w-full h-80 rounded object-cover"
+              />
+            </div>
+
+            {/* Product Info */}
+            <div className="relative p-4">
+              <div className="absolute right-0 top-20">
+                {
+                  product?.requiredPrescription ? <Button variant={"outline"}>Prescription Required <CheckCheckIcon /> </Button> : <Button variant={"destructive"} className="rounded-none">Prescription No Need <X size={"5"}/></Button>
+                }
+              </div>
+              <h1 className="text-3xl font-bold mb-4">{product?.name}</h1>
+
+              <div className="flex items-center gap-2 mb-4">
+                <Image src={product?.category?.icon} width={500}
+                  height={500} alt={product?.category?.name} className="w-6 h-6" />
+                <span className="text-lg font-semibold">{product?.category?.name}</span>
+              </div>
+
+              <p className="text-sm text-gray-500 mb-2">Manufacturer: <span className="text-green-600">{product?.manufacturerDetails}</span></p>
+              <p className="text-sm text-yellow-500 mb-2">Expiry Date: {new Date(product?.expireDate).toDateString()}</p>
+
+              {product?.inStock ? (
+                <span className="text-green-600">In Stock ({product?.quantity} available)</span>
+              ) : (
+                <span className="text-red-600">Out of Stock</span>
+              )}
+
+              <p className="text-xl font-semibold mt-2">Best Price: ৳{product?.price}</p>
+
+              {/* Buttons */}
+              <div className="mt-6 flex gap-4">
+                <Button variant="outline" className="rounded-none">Add to Cart</Button>
+                <Button variant="outline" className="rounded-none bg-cyan-950 hover:bg-cyan-800 duration-300 hover:text-white transition-all text-white cursor-pointer">Buy Now</Button>
+              </div>
+            </div>
+          </div>
+          <div className="mt-5">
+            <div>
+              <p className="p-4 bg-cyan-200 text-xl font-semibold">Medicine Details</p>
+            </div>
+            {
+              product?.description?.split(',').map((p, i) => <p className="mt-2" key={i + 1}>{p}</p>)
+            }
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

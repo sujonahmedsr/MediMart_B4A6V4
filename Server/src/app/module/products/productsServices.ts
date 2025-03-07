@@ -56,7 +56,7 @@ const getProducts = async (query: Record<string, unknown>) => {
 // get single product 
 const getSingleProducts = async (id: string) => {
 
-    const result = await productModel.findById(id)
+    const result = await productModel.findById(id).populate("category", "name icon")
     if (!result) {
         throw new AppError(StatusCodes.NOT_FOUND, 'This product is not found !')
     }
