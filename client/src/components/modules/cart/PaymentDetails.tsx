@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,7 @@ const PaymentDetails = () => {
     const grandTotal = useAppSelector(grandTotalSelector);
 
     return (
-        <div className="border-2 border-white bg-background brightness-105 rounded-md col-span-4 h-fit p-5">
+        <div className="border rounded col-span-4 h-fit p-5">
             <h1 className="text-2xl font-bold">Payment Details</h1>
             <div className="space-y-2 mt-4">
                 <div className="flex justify-between">
@@ -38,7 +38,7 @@ const PaymentDetails = () => {
                 </p>
             </div>
             <Button
-                className="w-full text-xl font-semibold py-5"
+                className="w-full text-xl font-semibold py-5 bg-cyan-950 text-white hover:bg-cyan-800 duration-300 transition-all cursor-pointer rounded"
             >
                 Order Now
             </Button>
