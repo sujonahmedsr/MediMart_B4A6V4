@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createProduct } from "@/services/medicine";
 import axios from "axios"
+import { Checkbox } from "@/components/ui/checkbox";
 
 // Zod Schema
 type medicineFormType = z.infer<typeof medicineSchema>;
@@ -48,7 +49,7 @@ export default function CreateMedicine() {
     const router = useRouter()
     useEffect(() => {
         const fetchData = async () => {
-            const category = await allCategories(undefined,'18')
+            const category = await allCategories(undefined, '18')
             setCategories(category?.data?.result)
         }
         fetchData()
@@ -259,6 +260,24 @@ export default function CreateMedicine() {
                                     value={field.value || ""}
                                 />
                             </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/* ✅ Checkbox Field */}
+                <FormField
+                    control={form.control}
+                    name="requiredPrescription"
+                    render={({ field }) => (
+                        <FormItem className="flex items-center space-x-3">
+                            <FormControl>
+                                <Checkbox
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                />
+                            </FormControl>
+                            <FormLabel>Requires Prescription</FormLabel>
                             <FormMessage />
                         </FormItem>
                     )}

@@ -32,7 +32,7 @@ export default function ProductDetails({ product }: { product: IMedicine }) {
             <div className="relative p-4">
               <div className="absolute right-0 top-20">
                 {
-                  product?.requiredPrescription ? <Button variant={"outline"}>Prescription required. <CheckCheckIcon /> </Button> : <Button variant={"destructive"} className="rounded-none">No prescription needed.<X size={"5"} /></Button>
+                  product?.requiredPrescription ? <Button variant={"secondary"} className="bg-cyan-600 text-white pointer-events-none rounded-none">Prescription required. <CheckCheckIcon /> </Button> : <Button variant={"destructive"} className="rounded-none">No prescription needed.<X size={"5"} /></Button>
                 }
               </div>
               <h1 className="text-3xl font-bold mb-4">{product?.name}</h1>

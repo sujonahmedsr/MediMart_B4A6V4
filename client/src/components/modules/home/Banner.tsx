@@ -33,7 +33,7 @@ export function Banner() {
                     {banners.map((banner, index) => (
                         <CarouselItem key={index}>
                             <div className="mt-1 border shadow">
-                                <Image src={banner} alt="banner" className="w-full h-full" width={1920} height={300}/>
+                                <Image src={banner} alt="banner" className="w-full md:h-full h-40" width={1920} height={400}/>
                             </div>
                         </CarouselItem>
                     ))}

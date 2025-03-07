@@ -95,7 +95,7 @@ const Navbar = () => {
                                             <AvatarFallback>User</AvatarFallback>
                                         </Avatar>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent>
+                                    <DropdownMenuContent className="w-40 mt-5">
                                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem>Profile</DropdownMenuItem>
@@ -110,7 +110,7 @@ const Navbar = () => {
                                             onClick={handleLogOut}
                                         >
 
-                                            <Button> <LogOut /><span>Log Out</span></Button>
+                                            <Button className="w-full"> <LogOut /><span>Log Out</span></Button>
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>

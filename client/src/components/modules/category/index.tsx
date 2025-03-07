@@ -12,6 +12,7 @@ import { deleteCategory } from "@/services/Category";
 import { toast } from "sonner";
 import TablePagination from "@/components/ui/core/TablePagination";
 import { IMeta } from "@/types/meta";
+import { Button } from "@/components/ui/button";
 
 type TCategoriesProps = {
     categories: ICategory[];
@@ -76,13 +77,13 @@ const ManageCategories = ({ categories, meta }: TCategoriesProps) => {
             accessorKey: "action",
             header: () => <div>Action</div>,
             cell: ({row}) => (
-                <button
-                    className="text-red-500"
+                <Button variant={"outline"}
+                    className="text-gray-600 hover:text-red-500"
                     title="Delete"
                     onClick={() => handleDelete(row.original)}
                 >
                     <Trash className="w-5 h-5" />
-                </button>
+                </Button>
             ),
         },
     ];

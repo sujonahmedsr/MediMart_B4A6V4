@@ -5,7 +5,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Eye, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { NMTable } from "@/components/ui/core/NMTable";
 import { IMedicine } from "@/types/medicine";
 import { IMeta } from "@/types/meta";
@@ -14,6 +13,7 @@ import { toast } from "sonner";
 import { deleteProduct } from "@/services/medicine";
 import { useState } from "react";
 import TablePagination from "@/components/ui/core/TablePagination";
+import { Button } from "@/components/ui/button";
 
 const ManageMedicine = ({
   products,
@@ -56,7 +56,9 @@ const ManageMedicine = ({
   const router = useRouter();
 
   const handleView = (product: IMedicine) => {
-    console.log("Viewing product:", product);
+    router.push(
+      `/shop/${product?._id}`
+    )
   };
 
   const columns: ColumnDef<IMedicine>[] = [
@@ -96,15 +98,15 @@ const ManageMedicine = ({
       header: "Action",
       cell: ({ row }) => (
         <div className="flex items-center space-x-3">
-          <button
-            className="text-gray-500 hover:text-blue-500"
+          <Button variant={"outline"}
+            className="text-gray-500 hover:text-blue-500 rounded"
             title="View"
             onClick={() => handleView(row.original)}
           >
             <Eye className="w-5 h-5" />
-          </button>
+          </Button>
 
-          <button
+          <Button variant={"outline"}
             className="text-gray-500 hover:text-green-500"
             title="Edit"
             onClick={() =>
@@ -114,15 +116,15 @@ const ManageMedicine = ({
             }
           >
             <Edit className="w-5 h-5" />
-          </button>
+          </Button>
 
-          <button
+          <Button variant={"outline"}
             className="text-gray-500 hover:text-red-500"
             title="Delete"
             onClick={() => handleDelete(row?.original)}
           >
             <Trash className="w-5 h-5" />
-          </button>
+          </Button>
         </div>
       ),
     },

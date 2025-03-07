@@ -1,3 +1,4 @@
+"use client"
 import { Card, CardContent } from "@/components/ui/card";
 import { IMedicine } from "@/types/medicine";
 import Image from "next/image";
