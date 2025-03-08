@@ -9,13 +9,14 @@ import { IUser } from "@/types/user";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import { deactiveUser } from "@/services/Admin";
+import { Eye } from "lucide-react";
+import UserDetailsModal from "./UserDetailsModal";
 
 const Manageusers = ({ users }: { users: IUser[] }) => {
     const handleDeactive = async (id: string, booleans: boolean) => {
         const toastId = toast.loading("Loading...");
         try {
             const res = await deactiveUser({ id, booleans });
-            console.log(res);
 
             if (res?.status) {
                 toast.success(res?.message);
@@ -35,7 +36,7 @@ const Manageusers = ({ users }: { users: IUser[] }) => {
                 <div className="flex items-center space-x-3">
                     <h1 className="text-lg font-semibold">{row.index + 1}.</h1>
                     <Image
-                        src={row?.original?.image as string}
+                        src={row?.original?.image as string || "https://github.com/shadcn.png"}
                         alt={row?.original?.name}
                         width={40}
                         height={40}
@@ -86,32 +87,35 @@ const Manageusers = ({ users }: { users: IUser[] }) => {
             cell: ({ row }) => {
                 const user = row.original;
                 return (
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                {user.isBlocked ? (
-                                    <Button
-                                        variant="outline"
-                                        onClick={() => handleDeactive(user._id, false)}
+                    <div className="flex items-center gap-2">
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    {user.isBlocked ? (
+                                        <Button
+                                            variant="destructive"
+                                            onClick={() => handleDeactive(user._id, false)}
 
-                                    >
-                                        Deactive
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        variant="outline"
-                                        onClick={() => handleDeactive(user._id, true)}
+                                        >
+                                            Deactive
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="outline"
+                                            onClick={() => handleDeactive(user._id, true)}
 
-                                    >
-                                        Active
-                                    </Button>
-                                )}
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>{user.isBlocked ? "Click to activate this user" : "Click to deactivate this user"}</p>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
+                                        >
+                                            Active
+                                        </Button>
+                                    )}
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{user.isBlocked ? "Click to activate this user" : "Click to deactivate this user"}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                        <UserDetailsModal user={row.original} />
+                    </div>
                 );
             },
         },
