@@ -6,7 +6,7 @@ const HangleCategory = ({categories}: {categories: ICategory[]}) => {
     return (
         <div>
             <div>
-                <h1 className="text-3xl font-semibold text-center">Shop By Category</h1>
+                <h1 className="text-3xl font-bold text-center text-cyan-900">Shop By Category</h1>
             </div>
             <div className="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-5 mt-5">
                 {
