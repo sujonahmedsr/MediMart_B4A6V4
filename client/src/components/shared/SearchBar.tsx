@@ -10,18 +10,18 @@ import { useRouter } from "next/navigation";
 const SearchBar = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
-    const [searchTerm, setSearchTerm] = useState(""); // New state for search term
+    const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const router = useRouter();
-    const dropdownRef = useRef(null); // Ref for the dropdown container
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            const productData = await allProducts();
+            const productData = await allProducts(undefined, "100", undefined);
             setProducts(productData?.data?.result);
-            setFilteredProducts(productData?.data?.result); // Set filtered products initially to all products
+            setFilteredProducts(productData?.data?.result); 
             setLoading(false);
         };
         fetchData();
