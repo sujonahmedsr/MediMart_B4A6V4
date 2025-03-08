@@ -66,12 +66,12 @@ const data = {
     },
     {
       title: "Manage Users",
-      url: "/admin/categories",
+      url: "/admin/users",
       icon: Bot,
       items: [
         {
           title: "All Users",
-          url: "/admin/categories",
+          url: "/admin/users",
         },
       ],
     },
