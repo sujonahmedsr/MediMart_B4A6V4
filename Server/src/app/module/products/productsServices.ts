@@ -53,6 +53,43 @@ const getProducts = async (query: Record<string, unknown>) => {
     };
 };
 
+const getAllProductsByCategory = async () => {
+    try {
+        const products = await productModel.aggregate([
+            {
+                $lookup: {
+                    from: "categories", // ক্যাটাগরি কালেকশন
+                    localField: "category", // প্রোডাক্ট মডেলের category ফিল্ড
+                    foreignField: "_id", // ক্যাটাগরি মডেলের _id
+                    as: "categoryDetails"
+                }
+            },
+            {
+                $unwind: "$categoryDetails" // ক্যাটাগরি অ্যারেকে অবজেক্ট বানানোর জন্য
+            },
+            {
+                $group: {
+                    _id: {categoryId: "$categoryDetails._id",  categoryName: "$categoryDetails.name"}, // productType অনুযায়ী গ্রুপিং
+                    // totalProducts: { $sum: 1 },
+                    // totalQuantity: { $sum: "$quantity" },
+                    // avgPrice: { $avg: "$price" },
+                    products: { $push: "$$ROOT" } // সব প্রোডাক্ট লিস্ট হিসেবে সংরক্ষণ
+                }
+            },
+            {
+                $addFields: {
+                    products: { $slice: ["$products", 4] } // সর্বোচ্চ ৫টি প্রোডাক্ট রাখা
+                }
+            },
+            { $sort: { totalProducts: -1 } } // বেশি প্রোডাক্ট থাকা টাইপগুলো আগে আসবে
+        ]);
+
+        return products
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 // get single product 
 const getSingleProducts = async (id: string) => {
 
@@ -82,6 +119,7 @@ const deleteSingleProducts = async (id: string) => {
 export const productServices = {
     createProduct,
     getProducts,
+    getAllProductsByCategory,
     getSingleProducts,
     updateSingleProducts,
     deleteSingleProducts

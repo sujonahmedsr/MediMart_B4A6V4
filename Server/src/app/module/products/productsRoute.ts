@@ -5,6 +5,7 @@ import authMid from "../Authentication/authMid";
 const productsRouter = Router()
 
 productsRouter.post('/create', authMid("admin"), productController.createConProduct)
+productsRouter.get('/productByCategory',  productController.getAllProductsByCategory)
 productsRouter.get('/',  productController.getConProduct)
 productsRouter.get('/:id',  productController.getSingleConProduct)
 productsRouter.patch('/:id', authMid("admin"), productController.updateSingleConProduct)

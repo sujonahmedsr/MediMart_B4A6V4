@@ -25,6 +25,14 @@ const getConProduct = asyncFunc(async (req, res) => {
         data: result,
     })
 })
+const getAllProductsByCategory = asyncFunc(async (req, res) => {
+    const result = await productServices.getAllProductsByCategory()
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        message: 'All Products by category retrieved successfully',
+        data: result,
+    })
+})
 
 
 // get single product 
@@ -64,6 +72,7 @@ const deleteSingleConProduct = asyncFunc(async (req, res) => {
 export const productController = {
     createConProduct,
     getConProduct,
+    getAllProductsByCategory,
     getSingleConProduct,
     updateSingleConProduct,
     deleteSingleConProduct
