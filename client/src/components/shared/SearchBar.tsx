@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { IMedicine } from "@/types/medicine";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const SearchBar = () => {
     const [products, setProducts] = useState([]);
@@ -21,7 +22,7 @@ const SearchBar = () => {
             setLoading(true);
             const productData = await allProducts(undefined, "100", undefined);
             setProducts(productData?.data?.result);
-            setFilteredProducts(productData?.data?.result); 
+            setFilteredProducts(productData?.data?.result);
             setLoading(false);
         };
         fetchData();
@@ -118,9 +119,11 @@ const SearchBar = () => {
                     )}
                 </div>
                 <div className="text-center">
-                    <Button variant={"outline"} className="mt-5">
-                        View All Medicine
-                    </Button>
+                    <Link href={'/shop'}>
+                        <Button variant={"outline"} className="mt-5">
+                            View All Medicine
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </div>

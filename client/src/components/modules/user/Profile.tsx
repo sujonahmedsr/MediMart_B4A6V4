@@ -1,6 +1,5 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,8 @@ import Image from "next/image";
 import { useUser } from "@/userContextApi/UserProvider";
 import { Label } from "@/components/ui/label";
 import { Form, FormField, FormItem, FormMessage, FormControl } from "@/components/ui/form";
+import { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // Zod schema for validation
 const profileSchema = z.object({
@@ -22,8 +23,13 @@ const profileSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
 const Profile = () => {
-  const { user } = useUser();
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const { user, isLoading } = useUser();
 
+  if (isLoading) {
+    <div>Loading...</div>
+  }
+ 
   // Initialize form with default values
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -33,9 +39,22 @@ const Profile = () => {
       phone: user?.phone || "",
       city: user?.city || "",
       address: user?.address || "",
-      password: "",
     },
   });
+
+  const { reset } = form
+
+  useEffect(() => {
+    if (user) {
+      reset({
+        name: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        city: user.city || "",
+        address: user.address || "",
+      });
+    }
+  }, [user, reset]);
 
   // Handle profile update
   const onSubmit = (data: ProfileFormValues) => {
@@ -43,10 +62,15 @@ const Profile = () => {
     console.log("Updated Data:", data);
   };
 
+
+  const handleCancelProfileEdit = () => {
+    setIsEditingProfile(false)
+  };
+
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-2xl mt-8 space-y-6 border">
+    <div className="max-w-2xl w-full container mx-auto p-6 bg-white shadow-lg rounded mt-8 space-y-6 border">
       {/* User Avatar */}
-      <div className="flex items-center gap-6">
+      <div className="flex flex-col items-center gap-3 text-center">
         <Image
           src={user?.image || "https://github.com/shadcn.png"}
           alt="User Avatar"
@@ -57,7 +81,7 @@ const Profile = () => {
         <div>
           <h2 className="text-2xl font-bold text-gray-800">{user?.name}</h2>
           <p className="text-sm text-gray-500">Role: {user?.role}</p>
-          {user?.isBlocked && <span className="text-red-500">Blocked</span>}
+          {user?.isBlocked ? <Button variant={"destructive"} className="mt-2">Blocked</Button> : <Button variant={"outline"} className="mt-2">Active</Button>}
         </div>
       </div>
 
@@ -72,7 +96,7 @@ const Profile = () => {
               <FormItem>
                 <Label>Name</Label>
                 <FormControl>
-                  <Input placeholder="Enter your name" {...field} />
+                  <Input placeholder="Enter your name" {...field} disabled={!isEditingProfile}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -87,7 +111,7 @@ const Profile = () => {
               <FormItem>
                 <Label>Email</Label>
                 <FormControl>
-                  <Input placeholder="Your email" {...field} disabled />
+                  <Input placeholder="Your email" {...field} value={field.value || ""} disabled={true}/>
                 </FormControl>
               </FormItem>
             )}
@@ -101,7 +125,7 @@ const Profile = () => {
               <FormItem>
                 <Label>Phone</Label>
                 <FormControl>
-                  <Input placeholder="Enter your phone number" {...field} />
+                  <Input placeholder="Enter your phone number" {...field} value={field.value || ""} disabled={!isEditingProfile}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -116,7 +140,7 @@ const Profile = () => {
               <FormItem>
                 <Label>City</Label>
                 <FormControl>
-                  <Input placeholder="Enter your city" {...field} />
+                  <Input placeholder="Enter your city" {...field} value={field.value || ""} disabled={!isEditingProfile}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -131,22 +155,7 @@ const Profile = () => {
               <FormItem>
                 <Label>Address</Label>
                 <FormControl>
-                  <Input placeholder="Enter your address" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Password */}
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <Label>New Password (Optional)</Label>
-                <FormControl>
-                  <Input type="password" placeholder="Enter new password" {...field} />
+                  <Input placeholder="Enter your address" {...field} value={field.value || ""} disabled={!isEditingProfile}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -154,9 +163,26 @@ const Profile = () => {
           />
 
           {/* Submit Button */}
-          <Button type="submit" className="w-full">
-            Update Profile
-          </Button>
+          {isEditingProfile ? (
+            <div className="flex gap-4 mt-4">
+              <Button variant="outline"
+              >
+                Save Changes
+              </Button>
+              <Button variant="destructive" onClick={handleCancelProfileEdit}
+              >
+                Cancel
+              </Button>
+            </div>
+          ) : (
+            <Button
+              className="mt-4"
+              variant="outline"
+              onClick={() => setIsEditingProfile(true)}
+            >
+              Edit Profile
+            </Button>
+          )}
         </form>
       </Form>
     </div>
@@ -164,3 +190,4 @@ const Profile = () => {
 };
 
 export default Profile;
+

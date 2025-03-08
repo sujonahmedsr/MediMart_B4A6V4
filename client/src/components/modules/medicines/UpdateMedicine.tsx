@@ -64,7 +64,7 @@ export default function UpdateMedicine({ product }: { product: IMedicine }) {
         defaultValues: {
             name: product?.name || "",
             image: product?.image || "",
-            price: typeof product?.price === 'string' ? parseFloat(product?.price) : product?.price || "",
+            price: parseFloat(product?.price),
             category: product?.category || "",
             description: product?.description || "",
             quantity: typeof product?.quantity === 'string' ? parseInt(product?.quantity) : product?.quantity || "",
