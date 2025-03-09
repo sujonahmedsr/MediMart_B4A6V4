@@ -10,7 +10,7 @@ export const allProducts = async (page?: string, limit?: string, query?: { [key:
 
         const params = new URLSearchParams()
 
-        if(query?.cat_id){
+        if (query?.cat_id) {
             params.append("category", query?.cat_id.toString())
         }
 
@@ -20,6 +20,20 @@ export const allProducts = async (page?: string, limit?: string, query?: { [key:
             }
         })
         const result = res.json()
+        return result
+    } catch (error: any) {
+        throw new Error(error?.message)
+    }
+}
+
+export const productsByCategory = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product/productByCategory`, {
+            next: {
+                tags: ["PRODUCT"],
+            }
+        })
+        const result = await res.json()
         return result
     } catch (error: any) {
         throw new Error(error?.message)
@@ -58,7 +72,7 @@ export const singleProduct = async (id: string) => {
     }
 }
 
-export const updateProduct = async (id: string,data: FieldValues) => {
+export const updateProduct = async (id: string, data: FieldValues) => {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product/${id}`, {
             method: "PATCH",
@@ -79,18 +93,18 @@ export const updateProduct = async (id: string,data: FieldValues) => {
 // delete Product
 export const deleteProduct = async (productId: string): Promise<any> => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_API}/product/${productId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: (await cookies()).get("accessToken")!.value,
-          },
-        }
-      );
-      revalidateTag("PRODUCT");
-      return res.json();
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_API}/product/${productId}`,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: (await cookies()).get("accessToken")!.value,
+                },
+            }
+        );
+        revalidateTag("PRODUCT");
+        return res.json();
     } catch (error: any) {
-      return Error(error?.message);
+        return Error(error?.message);
     }
-  };
+};

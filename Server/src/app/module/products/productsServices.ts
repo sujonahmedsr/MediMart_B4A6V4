@@ -69,11 +69,31 @@ const getAllProductsByCategory = async () => {
             },
             {
                 $group: {
-                    _id: {categoryId: "$categoryDetails._id",  categoryName: "$categoryDetails.name"}, // productType অনুযায়ী গ্রুপিং
+                    _id: { categoryId: "$categoryDetails._id", categoryName: "$categoryDetails.name" }, // productType অনুযায়ী গ্রুপিং
                     // totalProducts: { $sum: 1 },
                     // totalQuantity: { $sum: "$quantity" },
                     // avgPrice: { $avg: "$price" },
-                    products: { $push: "$$ROOT" } // সব প্রোডাক্ট লিস্ট হিসেবে সংরক্ষণ
+                    products: {
+                        $push: {
+                            _id: "$_id",
+                            name: "$name",
+                            image: "$image",
+                            price: "$price",
+                            description: "$description",
+                            quantity: "$quantity",
+                            inStock: "$inStock",
+                            expireDate: "$expireDate",
+                            manufacturerDetails: "$manufacturerDetails",
+                            requiredPrescription: "$requiredPrescription",
+                            createdAt: "$createdAt",
+                            updatedAt: "$updatedAt",
+                            category: {
+                                _id: "$categoryDetails._id",
+                                name: "$categoryDetails.name",
+                                icon: "$categoryDetails.icon"
+                            }
+                        }
+                    } // সব প্রোডাক্ট লিস্ট হিসেবে সংরক্ষণ
                 }
             },
             {

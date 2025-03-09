@@ -13,3 +13,13 @@ export interface IMedicine {
     manufacturerDetails: string,
     requiredPrescription: boolean
 }
+
+interface Category {
+    categoryId: string,
+    categoryName: string
+}
+
+export interface ICategoryMedicine {
+    _id: Category,
+    products: IMedicine[]
+}
