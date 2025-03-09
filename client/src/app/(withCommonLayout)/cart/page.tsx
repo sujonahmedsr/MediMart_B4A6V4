@@ -1,6 +1,12 @@
 import Address from "@/components/modules/cart/Address";
 import CartProducts from "@/components/modules/cart/CartProducts";
 import PaymentDetails from "@/components/modules/cart/PaymentDetails";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "💊 MediMart – Cart",
+  description: "MediMart offers high-quality medicines and healthcare products with quick and reliable delivery. Shop online for all your health needs.",
+};
 
 const CartPage = () => {
   return (

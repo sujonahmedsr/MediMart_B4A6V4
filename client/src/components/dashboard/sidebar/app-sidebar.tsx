@@ -85,10 +85,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/">
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <h2 className="font-bold text-xl">MediMart</h2>
-                </div>
+              <Link href={'/'} className="text-2xl font-bold flex items-center gap-2">
+                <span>💊</span>
+                <h1>Medi<span className="text-cyan-900">Mart</span></h1>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

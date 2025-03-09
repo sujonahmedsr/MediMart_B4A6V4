@@ -1,5 +1,11 @@
 import UpdateMedicine from "@/components/modules/medicines/UpdateMedicine";
 import { singleProduct } from "@/services/medicine";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "💊 MediMart – Update Medicine",
+  description: "MediMart offers high-quality medicines and healthcare products with quick and reliable delivery. Shop online for all your health needs.",
+};
 
 const UpdateProductPage = async ({
   params,

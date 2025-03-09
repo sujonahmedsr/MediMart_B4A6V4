@@ -40,28 +40,27 @@ export default function RegisterForm() {
     try {
       const res = await registerUser(data);
       setIsLoading(true)
-        
+
       if (res?.status) {
         toast.success(res?.message);
         router.push('/')
       } else {
         toast.error(res?.message);
       }
-    
+
     } catch (err: any) {
       console.error(err);
     }
   };
 
   return (
-    <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-md w-full p-5">
-      <div className="flex items-center space-x-4 ">
-        <Link href={'/'}>
-          <h1 className="text-2xl font-black flex items-center">
-            Medi Mart
-          </h1>
+    <div className="border border-gray-300 rounded flex-grow max-w-md w-full p-5">
+      <div className="flex items-center space-x-4 mb-4">
+        <Link href={'/'} className="text-2xl font-bold flex items-center justify-between gap-2">
+          <span>💊</span>
+          <h1>Medi<span className="text-cyan-900">Mart</span></h1>
         </Link>
-        <div>
+        <div className="text-end">
           <h1 className="text-xl font-semibold">Register</h1>
           <p className="font-extralight text-sm text-gray-600">
             Join us today and start your journey!
@@ -88,7 +87,7 @@ export default function RegisterForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel className="mt-3">Email</FormLabel>
                 <FormControl>
                   <Input type="email" {...field} value={field.value || ""} />
                 </FormControl>
@@ -101,7 +100,7 @@ export default function RegisterForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel className="mt-3">Password</FormLabel>
                 <FormControl>
                   <Input type="password" {...field} value={field.value || ""} />
                 </FormControl>
@@ -114,7 +113,7 @@ export default function RegisterForm() {
             name="passwordConfirm"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
+                <FormLabel className="mt-3">Confirm Password</FormLabel>
                 <FormControl>
                   <Input type="password" {...field} value={field.value || ""} />
                 </FormControl>
@@ -131,7 +130,7 @@ export default function RegisterForm() {
           <Button
             // disabled={passwordConfirm && password !== passwordConfirm}
             type="submit"
-            className="mt-5 w-full"
+            className="mt-5 w-full rounded bg-cyan-900 hover:bg-cyan-950 text-white duration-300 transition-all"
           >
             {isSubmitting ? "Registering...." : "Register"}
           </Button>
@@ -139,7 +138,7 @@ export default function RegisterForm() {
       </Form>
       <p className="text-sm text-gray-600 text-center my-3">
         Already have an account ?
-        <Link href="/login" className="text-primary">
+        <Link href="/login" className="text-cyan-900 hover:underline">
           Login
         </Link>
       </p>

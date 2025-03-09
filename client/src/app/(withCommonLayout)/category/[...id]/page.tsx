@@ -3,7 +3,13 @@ import { singleCategory } from "@/services/Category";
 import { allProducts } from "@/services/medicine";
 import { ICategory } from "@/types/category";
 import { IMedicine } from "@/types/medicine";
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "💊 MediMart – Category Products",
+  description: "MediMart offers high-quality medicines and healthcare products with quick and reliable delivery. Shop online for all your health needs.",
+};
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 const page = async ({

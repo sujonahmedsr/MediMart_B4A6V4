@@ -19,6 +19,9 @@ const ShopProducts = ({ category, products, meta }: { category: ICategory[], pro
                         products?.map((product, index) => <ProductCard key={index + 1} product={product} />)
                     }
                 </div>
+                <div>
+                    <h1 className="text-xl font-semibold text-cyan-900">{ products?.length === 0 && 'No Medicine Founds.' }</h1>
+                </div>
                 <div className="flex items-center justify-end">
                     <TablePagination totalPage={meta?.totalPage} />
                 </div>

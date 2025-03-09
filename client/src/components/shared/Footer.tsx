@@ -39,13 +39,12 @@ const Footer = () => {
                         <div className="flex w-full max-w-96 shrink flex-col items-center justify-between gap-6 lg:items-start">
                             <div>
                                 <Link href={'/'} className="text-2xl font-bold flex items-center gap-2">
-                                    <h1>Medi<span className="text-blue-600">Mart</span></h1>
+                                    <span>💊</span>
+                                    <h1>Medi<span className="text-cyan-900">Mart</span></h1>
                                 </Link>
                                 <p className="mt-6 text-sm text-muted-foreground text-start">
 
-                                    Cycle_Labs – Your trusted bicycle shop! We offer high-quality bicycles, accessories, and repair services for everyone. 🚴‍♂️💨
-
-                                    📍 Premium Quality | 🔧 Reliable Service | 🎯 Your Needs, Our Priority
+                                💊 MediMart – Your trusted online pharmacy. We deliver high-quality medicines and healthcare products quickly and reliably to your doorstep.
                                 </p>
                             </div>
                             <ul className="flex items-center space-x-6 text-muted-foreground">

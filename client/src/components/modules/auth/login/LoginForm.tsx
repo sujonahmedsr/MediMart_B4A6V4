@@ -60,12 +60,11 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-md w-full p-5">
-      <div className="flex items-center space-x-4 ">
-        <Link href={'/'}>
-          <h1 className="text-2xl font-black flex items-center">
-            Medi Mart
-          </h1>
+    <div className="border border-gray-300 rounded flex-grow max-w-md w-full p-5">
+      <div className="flex items-center justify-between mb-4 space-x-4 ">
+        <Link href={'/'} className="text-2xl font-bold flex items-center gap-2">
+          <span>💊</span>
+          <h1>Medi<span className="text-cyan-900">Mart</span></h1>
         </Link>
         <div>
           <h1 className="text-xl font-semibold">Login</h1>
@@ -92,7 +91,7 @@ export default function LoginForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel className="mt-3">Password</FormLabel>
                 <FormControl>
                   <Input type="password" {...field} value={field.value || ""} />
                 </FormControl>
@@ -103,16 +102,16 @@ export default function LoginForm() {
 
           <Button
             type="submit"
-            className="mt-5 w-full"
+            className="mt-5 w-full rounded bg-cyan-900 hover:bg-cyan-950 text-white duration-300 transition-all"
           >
             {isSubmitting ? "Logging...." : "Login"}
           </Button>
         </form>
       </Form>
       <p className="text-sm text-gray-600 text-center my-3">
-        Do not have any account ?
-        <Link href="/register" className="text-primary">
-          Register
+        Do not have any account ? 
+         <Link href="/register" className="text-cyan-900 hover:underline">
+           Register
         </Link>
       </p>
     </div>

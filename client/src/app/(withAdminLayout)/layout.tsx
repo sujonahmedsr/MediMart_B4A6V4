@@ -1,6 +1,12 @@
 import { AppSidebar } from "@/components/dashboard/sidebar/app-sidebar"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { Metadata } from "next";
  
+export const metadata: Metadata = {
+  title: "💊 MediMart – Admin",
+  description: "MediMart offers high-quality medicines and healthcare products with quick and reliable delivery. Shop online for all your health needs.",
+};
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>

@@ -68,8 +68,8 @@ const Navbar = () => {
                 <nav className="hidden justify-between items-center lg:flex">
                     <div className="flex items-center gap-6">
                         <Link href={'/'} className="text-2xl font-bold flex items-center gap-2">
-                            <LucidePackageCheck className="text-blue-600" />
-                            <h1>Medi<span className="text-blue-600">Mart</span></h1>
+                            <span>💊</span>
+                            <h1>Medi<span className="text-cyan-900">Mart</span></h1>
                         </Link>
                     </div>
                     <SearchBar />
@@ -104,7 +104,9 @@ const Navbar = () => {
                                         </DropdownMenuItem>
                                         {
                                             user?.role === 'admin' && <Link href={'/admin'}>
-                                                <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                                                <DropdownMenuItem>
+                                                    Dashboard
+                                                </DropdownMenuItem>
                                             </Link>
                                         }
                                         <DropdownMenuItem>My Orders</DropdownMenuItem>
