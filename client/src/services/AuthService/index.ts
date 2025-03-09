@@ -2,6 +2,7 @@
 "use server";
 
 import { jwtDecode } from "jwt-decode";
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
@@ -54,6 +55,9 @@ export const getCurrentUser = async () => {
         decodedData = await jwtDecode(accessToken);
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user/${decodedData?.id}`,
             {
+                next: {
+                    tags: ["USER"]
+                },
                 method: "GET",
                 headers: {
                     Authorization: (await cookies()).get("accessToken")!.value,
@@ -69,4 +73,22 @@ export const getCurrentUser = async () => {
 
 export const logout = async () => {
     (await cookies()).delete("accessToken");
-  };
+};
+
+export const updateProfile = async (userData: FieldValues) => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user/update-profile`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: (await cookies()).get("accessToken")!.value,
+            },
+            body: JSON.stringify(userData),
+        })
+        const result = await res.json();
+        revalidateTag("USER")
+        return result
+    } catch (error: any) {
+        return Error(error);
+    }
+}

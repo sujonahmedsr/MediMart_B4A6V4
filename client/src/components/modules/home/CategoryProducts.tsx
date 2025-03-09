@@ -1,9 +1,10 @@
+"use client"
 import { ICategoryMedicine } from "@/types/medicine";
 import Link from "next/link";
 import ProductCard from "../Shop/ProductCard";
 
-const CategoryProducts = ({medicine}: {medicine: ICategoryMedicine}) => {
-    
+const CategoryProducts = ({ medicine }: { medicine: ICategoryMedicine }) => {
+
     return (
         <div className="container mx-auto">
             <div className="flex items-center justify-between">
@@ -12,7 +13,7 @@ const CategoryProducts = ({medicine}: {medicine: ICategoryMedicine}) => {
             </div>
             <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 mt-3">
                 {
-                    medicine?.products?.map((item, index) => <ProductCard key={index} product={item}/>)
+                    medicine?.products?.map((item, index) => <ProductCard key={index} product={item} />)
                 }
             </div>
         </div>

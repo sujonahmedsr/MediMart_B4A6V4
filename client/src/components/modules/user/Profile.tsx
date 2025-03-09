@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -9,6 +10,9 @@ import { Label } from "@/components/ui/label";
 import { Form, FormField, FormItem, FormMessage, FormControl } from "@/components/ui/form";
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { updateProfile } from "@/services/AuthService";
+import axios from "axios";
 
 // Zod schema for validation
 const profileSchema = z.object({
@@ -18,6 +22,7 @@ const profileSchema = z.object({
   city: z.string().optional(),
   address: z.string().optional(),
   password: z.string().optional(),
+  image: z.string().optional(),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -25,11 +30,8 @@ type ProfileFormValues = z.infer<typeof profileSchema>;
 const Profile = () => {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const { user, isLoading } = useUser();
+  const [imagePreview, setImagePreview] = useState<File | null>(null);
 
-  if (isLoading) {
-    <div>Loading...</div>
-  }
- 
   // Initialize form with default values
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -39,32 +41,64 @@ const Profile = () => {
       phone: user?.phone || "",
       city: user?.city || "",
       address: user?.address || "",
+      image: user?.image || "",
     },
   });
 
-  const { reset } = form
+  const { reset } = form;
 
   useEffect(() => {
     if (user) {
       reset({
-        name: user.name || "",
-        email: user.email || "",
-        phone: user.phone || "",
-        city: user.city || "",
-        address: user.address || "",
+        name: user?.name || "",
+        email: user?.email || "",
+        phone: user?.phone || "",
+        city: user?.city || "",
+        address: user?.address || "",
+        image: user?.image || "",
       });
     }
   }, [user, reset]);
 
-  // Handle profile update
-  const onSubmit = (data: ProfileFormValues) => {
-    alert("Profile updated successfully!");
-    console.log("Updated Data:", data);
+  if (isLoading) {
+    return <div>Loading...</div>; // Ensure the page stops rendering until the user data is loaded
+  }
+
+  const handleImageChange = (file: File) => {
+    setImagePreview(file); // Create a preview URL for the image
   };
 
+  const onSubmit = async (data: ProfileFormValues) => {
+    const toastId = toast.loading("Loading...")
+    try {
+      let imageUrl = user?.image || "";
+      if (imagePreview) {
+        const formData = new FormData();
+        formData.append("file", imagePreview);
+        formData.append("upload_preset", "cycle_labs"); // Replace with your Cloudinary preset
+
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/dvjeaplel/image/upload", // Replace with your Cloudinary cloud name
+          formData
+        );
+        // cloudirnay img url 
+        imageUrl = response.data.secure_url
+      }
+      const res = await updateProfile({ ...data, image: imageUrl });
+
+      if (res?.status) {
+        toast.success(res.message);
+        setIsEditingProfile(false)
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      toast.error("Something went wrong please try again.");
+    }
+  };
 
   const handleCancelProfileEdit = () => {
-    setIsEditingProfile(false)
+    setIsEditingProfile(false);
   };
 
   return (
@@ -88,88 +122,128 @@ const Profile = () => {
       {/* Form */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* Name */}
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <Label>Name</Label>
-                <FormControl>
-                  <Input placeholder="Enter your name" {...field} disabled={!isEditingProfile}/>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex items-center justify-between gap-5">
+            {/* Name */}
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <Label>Name</Label>
+                  <FormControl>
+                    <Input placeholder="Enter your name" {...field} disabled={!isEditingProfile} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          {/* Email (Read-Only) */}
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <Label>Email</Label>
-                <FormControl>
-                  <Input placeholder="Your email" {...field} value={field.value || ""} disabled={true}/>
-                </FormControl>
-              </FormItem>
-            )}
-          />
+            {/* Email (Read-Only) */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <Label>Email</Label>
+                  <FormControl>
+                    <Input placeholder="Your email" {...field} value={field.value || ""} disabled={true} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
 
-          {/* Phone */}
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <Label>Phone</Label>
-                <FormControl>
-                  <Input placeholder="Enter your phone number" {...field} value={field.value || ""} disabled={!isEditingProfile}/>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex items-center justify-between gap-5">
+            {/* Phone */}
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <Label>Phone</Label>
+                  <FormControl>
+                    <Input placeholder="Enter your phone number" {...field} value={field.value || ""} disabled={!isEditingProfile} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          {/* City */}
-          <FormField
-            control={form.control}
-            name="city"
-            render={({ field }) => (
-              <FormItem>
-                <Label>City</Label>
-                <FormControl>
-                  <Input placeholder="Enter your city" {...field} value={field.value || ""} disabled={!isEditingProfile}/>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            {/* City */}
+            <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <Label>City</Label>
+                  <FormControl>
+                    <Input placeholder="Enter your city" {...field} value={field.value || ""} disabled={!isEditingProfile} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          {/* Address */}
-          <FormField
-            control={form.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem>
-                <Label>Address</Label>
-                <FormControl>
-                  <Input placeholder="Enter your address" {...field} value={field.value || ""} disabled={!isEditingProfile}/>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex items-center justify-between gap-5">
+            {/* Address Form Field */}
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <Label>Address</Label>
+                  <FormControl>
+                    <Input placeholder="Enter your address" {...field} value={field.value || ""} disabled={!isEditingProfile} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Conditional rendering of the Profile Image upload */}
+            {isEditingProfile &&
+              <>
+                <div className="w-full">
+                  <FormField
+                    control={form.control}
+                    name="image"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <Label>Profile Image</Label>
+                        <FormControl>
+                          <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                handleImageChange(file); // Handle the file change
+                              }
+                            }}
+                            id="image-upload"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </>
+            }
+          </div>
+
+
 
           {/* Submit Button */}
           {isEditingProfile ? (
             <div className="flex gap-4 mt-4">
               <Button variant="outline"
+                className="rounded"
               >
                 Save Changes
               </Button>
-              <Button variant="destructive" onClick={handleCancelProfileEdit}
+              <Button variant="destructive" className="rounded" onClick={handleCancelProfileEdit}
               >
                 Cancel
               </Button>

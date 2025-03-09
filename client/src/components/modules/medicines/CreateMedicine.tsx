@@ -98,7 +98,6 @@ export default function CreateMedicine() {
             };
 
             const res = await createProduct(medicineData);
-            console.log(res);
 
             if (res?.status) {
                 toast.success(res.message);
