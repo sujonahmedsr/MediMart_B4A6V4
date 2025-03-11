@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "💊 MediMart – Your Trusted Online Pharmacy",
+  title: " MediMart – Your Trusted Online Pharmacy",
   description: "MediMart offers high-quality medicines and healthcare products with quick and reliable delivery. Shop online for all your health needs.",
 };
 

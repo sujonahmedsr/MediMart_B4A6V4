@@ -4,7 +4,7 @@ import { allProducts } from "@/services/medicine";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "💊 MediMart – Shop Medicine",
+    title: " MediMart – Shop Medicine",
     description: "MediMart offers high-quality medicines and healthcare products with quick and reliable delivery. Shop online for all your health needs.",
   };
 

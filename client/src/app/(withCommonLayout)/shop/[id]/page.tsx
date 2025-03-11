@@ -3,7 +3,7 @@ import { singleProduct } from "@/services/medicine";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "💊 MediMart – Medicine Deta",
+    title: " MediMart – Medicine Deta",
     description: "MediMart offers high-quality medicines and healthcare products with quick and reliable delivery. Shop online for all your health needs.",
 };
 
