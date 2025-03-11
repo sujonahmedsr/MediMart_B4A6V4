@@ -12,6 +12,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { updateProfile } from "@/services/AuthService";
 import axios from "axios";
+import { Textarea } from "@/components/ui/textarea";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { updateCity, updateShippingAddress } from "@/lib/redux/features/cart/cartSlice";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { cities } from "@/constants/cities";
 
 
 // Zod schema for validation
@@ -30,6 +41,7 @@ type ProfileFormValues = z.infer<typeof profileSchema>;
 const DeliveryDetails = () => {
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     const { user, isLoading } = useUser();
+    const dispatch = useAppDispatch();
 
     // Initialize form with default values
     const form = useForm<ProfileFormValues>({
@@ -44,7 +56,7 @@ const DeliveryDetails = () => {
         },
     });
 
-    const { reset } = form;
+    const { reset, setValue } = form;
 
     useEffect(() => {
         if (user) {
@@ -56,12 +68,25 @@ const DeliveryDetails = () => {
                 address: user?.address || "",
                 image: user?.image || "",
             });
+            if (user.city) {
+                setValue("city", user.city);
+                dispatch(updateCity(user.city));
+            }
         }
-    }, [user, reset]);
+    }, [user, reset, setValue, dispatch]);
 
     if (isLoading) {
         return <div>Loading...</div>; // Ensure the page stops rendering until the user data is loaded
     }
+
+    const handleCitySelect = (city: string) => {
+        setValue("city", city);
+        dispatch(updateCity(city));
+    };
+
+    const handleShippingAddress = (address: string) => {
+        dispatch(updateShippingAddress(address));
+    };
 
     const onSubmit = async (data: ProfileFormValues) => {
         try {
@@ -70,7 +95,6 @@ const DeliveryDetails = () => {
             if (res?.status) {
                 toast.success(res.message);
                 setIsEditingProfile(false)
-                // window.location.reload()
             } else {
                 toast.error(res.message);
             }
@@ -143,7 +167,18 @@ const DeliveryDetails = () => {
                                 <FormItem className="w-full">
                                     <Label>City</Label>
                                     <FormControl>
-                                        <Input placeholder="Enter your city" {...field} value={field.value || ""} disabled={!isEditingProfile} />
+                                        <Select disabled={!isEditingProfile} onValueChange={handleCitySelect} defaultValue={user?.city || ""}>
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Select a city" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {cities.map((city) => (
+                                                    <SelectItem key={city} value={city}>
+                                                        {city}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -160,34 +195,31 @@ const DeliveryDetails = () => {
                                 <FormItem className="w-full">
                                     <Label>Address</Label>
                                     <FormControl>
-                                        <Input placeholder="Enter your address" {...field} value={field.value || ""} disabled={!isEditingProfile} />
+                                        <Textarea
+                                            placeholder="Enter your address"
+                                            {...field}
+                                            value={field.value || ""}
+                                            onChange={(e) => {
+                                                field.onChange(e.target.value); // Update form state
+                                                handleShippingAddress(e.target.value); // Update Redux state
+                                            }}
+                                            disabled={!isEditingProfile}
+                                            rows={5}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
 
-                        {/* Submit Button */}
+
                         {isEditingProfile ? (
                             <div className="flex gap-4 mt-4">
-                                <Button variant="outline"
-                                    className="rounded"
-                                >
-                                    Save Changes
-                                </Button>
-                                <Button variant="destructive" className="rounded" onClick={handleCancelProfileEdit}
-                                >
-                                    Cancel
-                                </Button>
+                                <Button variant="outline" className="rounded">Save Changes</Button>
+                                <Button variant="destructive" className="rounded" onClick={handleCancelProfileEdit}>Cancel</Button>
                             </div>
                         ) : (
-                            <Button
-                                className="mt-4 rounded"
-                                variant="outline"
-                                onClick={() => setIsEditingProfile(true)}
-                            >
-                                Edit Address
-                            </Button>
+                            <Button className="mt-4 rounded" variant="outline" onClick={() => setIsEditingProfile(true)}>Edit Address</Button>
                         )}
                     </div>
                 </form>

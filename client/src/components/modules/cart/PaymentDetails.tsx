@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,6 @@ import { currencyFormatter } from '@/lib/currencyFormatter';
 import { grandTotalSelector, orderedProductsSelector, shippingCostSelector, subTotalSelector } from '@/lib/redux/features/cart/cartSlice';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { useUser } from '@/userContextApi/UserProvider';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { toast } from 'sonner';
@@ -54,9 +52,7 @@ const PaymentDetails = () => {
             <Button disabled={cartProducts?.length === 0 && true} onClick={handleOrder}
                 className="w-full text-xl font-semibold py-5 bg-cyan-950 text-white hover:bg-cyan-800 duration-300 transition-all cursor-pointer rounded"
             >
-                <Link href={'/checkOut'}>
-                    Check Out
-                </Link>
+                Order Now
             </Button>
         </div>
     );
