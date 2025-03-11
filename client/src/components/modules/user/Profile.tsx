@@ -69,7 +69,6 @@ const Profile = () => {
   };
 
   const onSubmit = async (data: ProfileFormValues) => {
-    const toastId = toast.loading("Loading...")
     try {
       let imageUrl = user?.image || "";
       if (imagePreview) {
@@ -89,6 +88,7 @@ const Profile = () => {
       if (res?.status) {
         toast.success(res.message);
         setIsEditingProfile(false)
+        window.location.reload()
       } else {
         toast.error(res.message);
       }
@@ -110,7 +110,7 @@ const Profile = () => {
           alt="User Avatar"
           width={100}
           height={100}
-          className="w-24 h-24 rounded-full border-4 border-primary"
+          className="w-24 h-24 rounded-full border border-cyan-900"
         />
         <div>
           <h2 className="text-2xl font-bold text-gray-800">{user?.name}</h2>

@@ -172,17 +172,17 @@ const verifyPayment = async (order_id: string) => {
             product: Types.ObjectId;
             quantity: number;
         }[]) {
-            const bike = await productModel.findById(item.product);
-            if (!bike || bike.quantity < item.quantity) {
-                throw new AppError(StatusCodes.CONFLICT, `Not enough stock for ${bike?.name}`);
+            const product = await productModel.findById(item.product);
+            if (!product || product.quantity < item.quantity) {
+                throw new AppError(StatusCodes.CONFLICT, `Not enough stock for ${product?.name}`);
             }
 
-            bike.quantity -= item.quantity;
-            if (bike.quantity === 0) {
-                bike.inStock = false;
+            product.quantity -= item.quantity;
+            if (product.quantity === 0) {
+                product.inStock = false;
             }
 
-            await bike.save();
+            await product.save();
         }
     }
 

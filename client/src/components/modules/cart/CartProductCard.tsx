@@ -4,10 +4,9 @@ import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/lib/currencyFormatter";
 import { CartProduct, decrementOrderQuantity, incrementOrderQuantity, removeProduct } from "@/lib/redux/features/cart/cartSlice";
 import { useAppDispatch } from "@/lib/redux/hooks";
-
-
 import { Minus, Plus, Trash } from "lucide-react";
 import Image from "next/image";
+import { toast } from "sonner";
 
 export default function CartProductCard({ product }: { product: CartProduct }) {
   const dispatch = useAppDispatch();
@@ -22,6 +21,7 @@ export default function CartProductCard({ product }: { product: CartProduct }) {
 
   const handleRemoveProduct = (id: string) => {
     dispatch(removeProduct(id));
+    toast.success("Remove Product From Cart.")
   };
 
   return (
@@ -50,12 +50,12 @@ export default function CartProductCard({ product }: { product: CartProduct }) {
         <hr className="my-1" />
         <div className="flex items-center justify-between">
           <h2>
-            Price: {currencyFormatter(product.price)}
+            Price: {currencyFormatter(product?.price as number)}
           </h2>
           <div className="flex items-center gap-2">
             <p className="text-gray-500 font-semibold">Quantity</p>
             <Button
-              onClick={() => handleDecrementQuantity(product._id)}
+              onClick={() => handleDecrementQuantity(product?._id)}
               variant="outline"
               className="size-8 rounded-sm"
             >
@@ -65,14 +65,16 @@ export default function CartProductCard({ product }: { product: CartProduct }) {
               {product?.orderQuantity}
             </p>
             <Button
-              onClick={() => handleIncrementQuantity(product._id)}
+              disabled={product?.inStock === false}
+              onClick={() => handleIncrementQuantity(product?._id)}
               variant="outline"
               className="size-8 rounded-sm"
             >
               <Plus />
             </Button>
             <Button
-              onClick={() => handleRemoveProduct(product._id)}
+              disabled={product?.inStock === false}
+              onClick={() => handleRemoveProduct(product?._id)}
               variant="outline"
               className="size-8 rounded-sm"
             >
