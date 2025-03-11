@@ -93,7 +93,7 @@ export const orderSelector = (state: RootState) => {
 // subTotalSelector
 export const subTotalSelector = (state: RootState) => {
     return state.cart.products.reduce((acc, product) => {
-        return acc + product.price * product.orderQuantity
+        return acc + Number(product.price) * product.orderQuantity
     }, 0)
 }
 

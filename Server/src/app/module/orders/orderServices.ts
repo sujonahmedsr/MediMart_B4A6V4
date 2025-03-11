@@ -32,6 +32,13 @@ const createOrder = async (user: Tuser, payload: { products: { _id: string; quan
             if (product) {
                 const subtotal = product ? (product.price || 0) * item.quantity : 0;
                 totalPrice += subtotal;
+
+                if (userData?.city === "Dhaka") {
+                    totalPrice += 60
+                } else {
+                    totalPrice += 120
+                }
+
                 return item;
             }
         })
