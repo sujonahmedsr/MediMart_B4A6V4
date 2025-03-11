@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 import { orderInterface } from "./ordersInterface";
 
 // create scheme for orders 
-const orderShchema = new Schema(
+const orderShchema = new Schema<orderInterface>(
     {
       user: {
         type: Schema.Types.ObjectId,
@@ -22,6 +22,10 @@ const orderShchema = new Schema(
           },
         },
       ],
+      presCription: {
+        type: String,
+        default: null,
+      },
       totalPrice: {
         type: Number,
         required: true,
@@ -47,5 +51,5 @@ const orderShchema = new Schema(
   );
 
 // create model for order 
-export const orderModel = model('orders', orderShchema)
+export const orderModel = model<orderInterface>('orders', orderShchema)
 

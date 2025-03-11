@@ -9,7 +9,9 @@ import { StatusCodes } from "http-status-codes";
 
 
 // create order 
-const createOrder = async (user: Tuser, payload: { products: { _id: string; quantity: number }[] }, client_ip: string) => {
+const createOrder = async (user: Tuser, payload: { products: { _id: string; quantity: number }[], presCription: string }, client_ip: string) => {
+    console.log(payload, "from payload");
+
     const id = user?.id
     const userData = await userModel.findById(id)
     if (!payload?.products?.length)
@@ -17,6 +19,11 @@ const createOrder = async (user: Tuser, payload: { products: { _id: string; quan
 
     const products = payload.products;
 
+    const productsWithPrescription = await productModel.find({ _id: { $in: products.map(p => p._id) }, requiredPrescription: true })
+
+    if (productsWithPrescription?.length > 0 && !payload?.presCription) {
+        throw new AppError(StatusCodes.BAD_REQUEST, "Prescription Required.")
+    }
 
     let totalPrice = 0;
     const productDetails = await Promise.all(
@@ -43,6 +50,7 @@ const createOrder = async (user: Tuser, payload: { products: { _id: string; quan
     let order = await orderModel.create({
         user: id,
         products: transformedProducts,
+        presCription: payload?.presCription,
         totalPrice,
     });
 
@@ -52,9 +60,9 @@ const createOrder = async (user: Tuser, payload: { products: { _id: string; quan
         order_id: order._id,
         currency: "BDT",
         customer_name: userData?.name,
-        customer_address: userData?.address,
         customer_email: userData?.email,
         customer_phone: userData?.phone,
+        customer_address: userData?.address,
         customer_city: userData?.city,
         client_ip,
     };
@@ -69,6 +77,8 @@ const createOrder = async (user: Tuser, payload: { products: { _id: string; quan
             },
         });
     }
+
+    console.log(payment, 'from order');
 
     return payment.checkout_url;
 

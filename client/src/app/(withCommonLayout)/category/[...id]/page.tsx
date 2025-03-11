@@ -33,7 +33,9 @@ const page = async ({
       </div>
       <div className="grid lg:grid-cols-4 md:grid-cols-1 grid-cols-1 gap-5 mt-5">
         {
+          products?.length > 0 ?
           products?.map((item: IMedicine, index: number) => <ProductCard product={item} key={index + 1}></ProductCard>)
+          : <div className="text-base font-semibold text-cyan-900"><h1>No Products Found In This Cateogory</h1></div>
         }
       </div>
     </div>

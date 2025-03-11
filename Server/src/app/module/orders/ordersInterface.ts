@@ -6,6 +6,7 @@ export interface orderInterface extends Document {
     product: Types.ObjectId;
     quantity: number;
   }[];
+  presCription?: string,
   totalPrice: number;
   status: "Pending" | "Paid" | "Shipped" | "Completed" | "Cancelled";
   transaction: {

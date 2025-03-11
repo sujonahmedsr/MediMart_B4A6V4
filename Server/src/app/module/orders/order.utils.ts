@@ -12,7 +12,7 @@ shurjopay.config(
 );
 
 
-// console.log(shurjopay);
+// console.log(shurjopay, 'surjo pay');
 
 const makePaymentAsync = async (
   paymentPayload: any
