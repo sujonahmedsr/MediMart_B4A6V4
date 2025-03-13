@@ -17,14 +17,15 @@ const PaymentDetails = () => {
     const user = useUser()
     const router = useRouter()
     const pathname = usePathname()
-    
+
 
     const handleOrder = async () => {
         if (!user?.user) {
             toast.error("User must logged in.")
             router.push(`/login?redirectPath=${pathname}`)
+        } else {
+            router.push('/checkOut')
         }
-        router.push('/checkOut')
     }
     return (
         <div className="border rounded h-fit p-5">

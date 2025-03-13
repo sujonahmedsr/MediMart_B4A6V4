@@ -6,8 +6,8 @@ type Role = keyof typeof roleBasedPrivateRoutes
 const authRoutes = ['/login', '/register']
 
 const roleBasedPrivateRoutes = {
-    admin: [/^\/admin(\/.*)?$/],
-    customer: [],
+    admin: [/^\/admin(\/.*)?$/, /^\/checkOut$/],
+    customer: [/^\/checkOut$/],
 }
 
 export const middleware = async (request: NextRequest) => {
@@ -24,7 +24,7 @@ export const middleware = async (request: NextRequest) => {
 
     if (userInfo?.role === "customer" && /^\/admin(\/.*)?$/.test(pathname)) {
         return NextResponse.redirect(new URL("/", request.url));
-      }
+    }
 
     if (userInfo?.role && roleBasedPrivateRoutes[userInfo?.role as Role]) {
         const routes = roleBasedPrivateRoutes[userInfo?.role as Role]
@@ -40,6 +40,7 @@ export const config = {
     matcher: [
         '/login',
         '/register',
+        '/checkOut',
         '/admin',
         "/admin/:path*",
     ]
