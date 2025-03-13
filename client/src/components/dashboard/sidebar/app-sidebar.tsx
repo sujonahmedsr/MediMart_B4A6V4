@@ -12,7 +12,6 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
@@ -84,12 +83,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <Link href={'/'} className="text-2xl font-bold flex items-center gap-2">
-                <span>💊</span>
-                <h1>Medi<span className="text-cyan-900">Mart</span></h1>
-              </Link>
-            </SidebarMenuButton>
+            <Link href={'/'} className="text-2xl font-bold flex items-center gap-2">
+              <span>💊</span>
+              <h1>Medi<span className="text-cyan-900">Mart</span></h1>
+            </Link>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
