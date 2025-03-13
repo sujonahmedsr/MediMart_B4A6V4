@@ -17,6 +17,7 @@ const PaymentDetails = () => {
     const user = useUser()
     const router = useRouter()
     const pathname = usePathname()
+    
 
     const handleOrder = async () => {
         if (!user?.user) {

@@ -2,10 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { currencyFormatter } from '@/lib/currencyFormatter';
-import { grandTotalSelector, orderedProductsSelector, shippingCostSelector, subTotalSelector } from '@/lib/redux/features/cart/cartSlice';
+import { citySelector, grandTotalSelector, orderedProductsSelector, shippingAddressSelector, shippingCostSelector, subTotalSelector } from '@/lib/redux/features/cart/cartSlice';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { useUser } from '@/userContextApi/UserProvider';
-import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { toast } from 'sonner';
 
@@ -13,15 +11,15 @@ const CheckOutDetails = () => {
     const subTotal = useAppSelector(subTotalSelector);
     const shippingCost = useAppSelector(shippingCostSelector);
     const grandTotal = useAppSelector(grandTotalSelector);
+    const city = useAppSelector(citySelector);
+    const address = useAppSelector(shippingAddressSelector);
     const cartProducts = useAppSelector(orderedProductsSelector);
-    const user = useUser()
-    const router = useRouter()
-    const pathname = usePathname()
 
     const handleOrder = async () => {
-        if (!user?.user) {
-            toast.error("User must logged in.")
-            router.push(`/login?redirectPath=${pathname}`)
+        if (!city || !address) {
+            toast.error("Please Update First Shipping Address")
+        }else{
+            toast.success("okay")
         }
     }
     return (
