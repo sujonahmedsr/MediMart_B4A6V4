@@ -209,7 +209,7 @@ const DeliveryDetails = () => {
                                     <Label>Address</Label>
                                     <FormControl>
                                         <Textarea
-                                            placeholder="Enter your address"
+                                            placeholder="Enter your address Like. Home No. Road. Village. Thana. Zila"
                                             {...field}
                                             value={field.value || ""}
                                             onChange={(e) => {

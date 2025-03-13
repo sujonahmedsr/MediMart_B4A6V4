@@ -9,7 +9,7 @@ import { StatusCodes } from "http-status-codes";
 
 
 // create order 
-const createOrder = async (user: Tuser, payload: { products: { _id: string; quantity: number }[], presCription: string }, client_ip: string) => {
+const createOrder = async (user: Tuser, payload: { products: { _id: string; orderQuantity: number }[], presCription: string }, client_ip: string) => {
     console.log(payload, "from payload");
 
     const id = user?.id
@@ -30,7 +30,7 @@ const createOrder = async (user: Tuser, payload: { products: { _id: string; quan
         products.map(async (item) => {
             const product = await productModel.findById(item._id);
             if (product) {
-                const subtotal = product ? (product.price || 0) * item.quantity : 0;
+                const subtotal = product ? (product.price || 0) * item.orderQuantity : 0;
                 totalPrice += subtotal;
 
                 if (userData?.city === "Dhaka") {
@@ -49,7 +49,7 @@ const createOrder = async (user: Tuser, payload: { products: { _id: string; quan
     productDetails.forEach(product => {
         transformedProducts.push({
             product: product?._id,
-            quantity: product?.quantity,
+            quantity: product?.orderQuantity,
         });
     });
 
