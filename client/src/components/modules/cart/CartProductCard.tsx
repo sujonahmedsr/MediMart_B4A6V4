@@ -7,6 +7,8 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { Minus, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
+import DummyMedicine from "@/assests/dummyMedicine.jpeg"
+
 
 export default function CartProductCard({ product }: { product: CartProduct }) {
   const dispatch = useAppDispatch();
@@ -28,7 +30,7 @@ export default function CartProductCard({ product }: { product: CartProduct }) {
     <div className="bg-white rounded-lg flex p-5 gap-5">
       <div className="h-full w-32 rounded-md overflow-hidden">
         <Image
-          src={product?.image as string}
+          src={product?.image as string || DummyMedicine}
           height={200}
           width={200}
           alt="product"

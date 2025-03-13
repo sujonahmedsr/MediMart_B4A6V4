@@ -14,6 +14,7 @@ import { deleteProduct } from "@/services/medicine";
 import { useState } from "react";
 import TablePagination from "@/components/ui/core/TablePagination";
 import { Button } from "@/components/ui/button";
+import DummyMedicine from "@/assests/dummyMedicine.jpeg"
 
 const ManageMedicine = ({
   products,
@@ -68,7 +69,7 @@ const ManageMedicine = ({
       cell: ({ row }) => (
         <div className="flex items-center space-x-3">
           <Image
-            src={row?.original?.image as string}
+            src={row?.original?.image as string || DummyMedicine}
             alt={row?.original?.name}
             width={40}
             height={40}
@@ -91,7 +92,7 @@ const ManageMedicine = ({
     {
       accessorKey: "price",
       header: "Price",
-      cell: ({ row }) => <span>$ {row?.original?.price.toFixed(2)}</span>,
+      cell: ({ row }) => <span>$ {Number(row?.original?.price).toFixed(2)}</span>,
     },
     {
       accessorKey: "action",

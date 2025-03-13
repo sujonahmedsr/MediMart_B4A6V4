@@ -7,6 +7,7 @@ import { IMedicine } from "@/types/medicine";
 import { CheckCheckIcon, X } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
+import DummyMedicine from "@/assests/dummyMedicine.jpeg"
 
 export default function ProductDetails({ product }: { product: IMedicine }) {
   const dispatch = useAppDispatch()
@@ -22,7 +23,7 @@ export default function ProductDetails({ product }: { product: IMedicine }) {
             {/* Product Image */}
             <div className="border p-4">
               <Image
-                src={product?.image as string}
+                src={product?.image as string || DummyMedicine}
                 alt={product?.name}
                 width={500}
                 height={500}

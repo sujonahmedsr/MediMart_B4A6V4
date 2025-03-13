@@ -1,6 +1,7 @@
 import { IMedicine } from "@/types/medicine";
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
+import { toast } from "sonner";
 
 export interface CartProduct extends IMedicine {
     orderQuantity: number;
@@ -39,9 +40,12 @@ const cartSlice = createSlice({
                 (product) => product._id === action.payload
             );
 
-            if (productToIncrement) {
+            if (productToIncrement && productToIncrement?.quantity !== productToIncrement?.orderQuantity) {
                 productToIncrement.orderQuantity += 1;
                 return;
+            }
+            if (productToIncrement?.quantity === productToIncrement?.orderQuantity) {
+                toast.error("Stock Un Availabe")
             }
         },
         decrementOrderQuantity: (state, action) => {

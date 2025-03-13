@@ -9,7 +9,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { toast } from 'sonner';
 
-const PaymentDetails = () => {
+const CheckOutDetails = () => {
     const subTotal = useAppSelector(subTotalSelector);
     const shippingCost = useAppSelector(shippingCostSelector);
     const grandTotal = useAppSelector(grandTotalSelector);
@@ -23,7 +23,6 @@ const PaymentDetails = () => {
             toast.error("User must logged in.")
             router.push(`/login?redirectPath=${pathname}`)
         }
-        router.push('/checkOut')
     }
     return (
         <div className="border rounded h-fit p-5">
@@ -53,10 +52,10 @@ const PaymentDetails = () => {
             <Button disabled={cartProducts?.length === 0 && true} onClick={handleOrder}
                 className="w-full text-xl font-semibold py-5 bg-cyan-950 text-white hover:bg-cyan-800 duration-300 transition-all cursor-pointer rounded"
             >
-                Check Out
+                Order Now
             </Button>
         </div>
     );
 };
 
-export default PaymentDetails;
+export default CheckOutDetails;

@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { IMedicine } from "@/types/medicine";
 import Image from "next/image";
 import Link from "next/link";
+import DummyMedicine from "@/assests/dummyMedicine.jpeg"
 
 export default function ProductCard({ product }: { product: IMedicine }) {
 
@@ -11,7 +12,7 @@ export default function ProductCard({ product }: { product: IMedicine }) {
             <Link href={`/shop/${product?._id}`}>
                 <CardContent>
                     <Image
-                        src={product?.image as string}
+                        src={product?.image as string || DummyMedicine}
                         alt={product?.name}
                         width={500}
                         height={500}

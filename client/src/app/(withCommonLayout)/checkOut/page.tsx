@@ -1,5 +1,5 @@
+import CheckOutDetails from "@/components/modules/cart/CheckOutDetails";
 import DeliveryDetails from "@/components/modules/cart/DeliveryDetails";
-import PaymentDetails from "@/components/modules/cart/PaymentDetails";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,7 +15,7 @@ const CheckOut = () => {
           <DeliveryDetails />
         </div>
         <div className="lg:col-span-4 md:col-span-3 col-span-1 space-y-5">
-          <PaymentDetails />
+          <CheckOutDetails />
         </div>
       </div>
     </div>
