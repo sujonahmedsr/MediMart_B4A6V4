@@ -4,14 +4,12 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/userContextApi/UserProvider";
 import { Label } from "@/components/ui/label";
 import { Form, FormField, FormItem, FormMessage, FormControl } from "@/components/ui/form";
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { updateProfile } from "@/services/AuthService";
-import axios from "axios";
+import { getCurrentUser, updateProfile } from "@/services/AuthService";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { updateCity, updateShippingAddress } from "@/lib/redux/features/cart/cartSlice";
@@ -23,7 +21,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { cities } from "@/constants/cities";
-
+import { IUser } from "@/types/user";
 
 // Zod schema for validation
 const profileSchema = z.object({
@@ -40,8 +38,22 @@ type ProfileFormValues = z.infer<typeof profileSchema>;
 
 const DeliveryDetails = () => {
     const [isEditingProfile, setIsEditingProfile] = useState(false);
-    const { user, isLoading } = useUser();
+    const [user, setUser] = useState<IUser | null>(null);
+    const [isLoading, setIsLoading] = useState(true); // Set initial loading state
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setIsLoading(true);
+            const data = await getCurrentUser();
+
+            setUser(data);
+            setIsLoading(false);
+        };
+        fetchData();
+    }, []);
+
+
 
     // Initialize form with default values
     const form = useForm<ProfileFormValues>({
@@ -94,7 +106,8 @@ const DeliveryDetails = () => {
 
             if (res?.status) {
                 toast.success(res.message);
-                setIsEditingProfile(false)
+                setIsEditingProfile(false);
+                window.location.reload()
             } else {
                 toast.error(res.message);
             }

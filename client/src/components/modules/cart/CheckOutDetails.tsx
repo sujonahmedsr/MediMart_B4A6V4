@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
@@ -7,66 +8,78 @@ import { currencyFormatter } from '@/lib/currencyFormatter';
 import { citySelector, clearCart, grandTotalSelector, orderedProductsSelector, orderSelector, shippingAddressSelector, shippingCostSelector, subTotalSelector } from '@/lib/redux/features/cart/cartSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { PlaceOrder } from '@/services/Order';
+import { IMedicine } from '@/types/medicine';
 import { useUser } from '@/userContextApi/UserProvider';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 const CheckOutDetails = () => {
-    const requiredPrescription = false
+    
     const dispatch = useAppDispatch()
     const [presCription, setPresCription] = useState<File | null>(null);
     const subTotal = useAppSelector(subTotalSelector);
     const shippingCost = useAppSelector(shippingCostSelector);
     const grandTotal = useAppSelector(grandTotalSelector);
-    const city = useAppSelector(citySelector);
-    const shippingAddress = useAppSelector(shippingAddressSelector);
+    // const city = useAppSelector(citySelector);
+    // const shippingAddress = useAppSelector(shippingAddressSelector);
     const cartProducts = useAppSelector(orderedProductsSelector);
-    const orderData = useAppSelector(orderSelector)
+    const orderData = useAppSelector(orderSelector);
     const router = useRouter()
-    const user = useUser()
+    const { isLoading, user } = useUser()
     const pathname = usePathname()
+
+    const requiredPrescription = cartProducts.some((product: IMedicine) => product.requiredPrescription)
+    
 
     const handleImageChange = (file: File) => {
         setPresCription(file); // Create a preview URL for the image
     };
 
-    useEffect(() => {
-        if (user && !user.user) {
-            toast.error("User must be logged in.");
-            router.push(`/login?redirectPath=${pathname}`);
-        }
-    }, [pathname, router, user]);
 
     const handleOrder = async () => {
-        const orderLoading = toast.loading("Order is being placed");
         try {
+            if (!user) {
+                router.push("/login");
+                throw new Error("Please login first.");
+            }
 
-            if (!city) {
+            if (cartProducts.length === 0) {
+                throw new Error("Cart is empty, what are you trying to order ??");
+            }
+
+            if (!user?.city) {
                 throw new Error("City is missing");
             }
-            if (!shippingAddress) {
+            if (!user?.address) {
                 throw new Error("Shipping address is missing");
             }
 
-            const res = await PlaceOrder(orderData);
-            console.log(res, "from order");
+            if(requiredPrescription && !presCription){
+                throw new Error("Prescription is required for those medicine.");
+            }
 
+            const orderPayload = {
+                products: orderData?.products,
+                city: user?.city,
+                shippingAddress: user?.address
+            };
 
-            if (res.status) {
-                toast.success(res.message, { id: orderLoading });
+            // PlaceOrder-এ সম্পূর্ণ ডেটা পাঠানো হচ্ছে
+            const res = await PlaceOrder(orderPayload);
+
+            if (res?.status) {
+                toast.success(res?.message);
                 dispatch(clearCart());
-                router.push(res.data.paymentUrl);
+                router.push(res?.data);
+            } else {
+                toast.error(res?.message || "Something went wrong!");
             }
-
-            if (!res.status) {
-                toast.error(res.message, { id: orderLoading });
-            }
-
-        } catch (error) {
-            toast.error('Failed to Order. Please try again.')
+        } catch (error: any) {
+            toast.error(error.message || "Failed to Order. Please try again.");
         }
-    }
+    };
+
     return (
         <>
             {

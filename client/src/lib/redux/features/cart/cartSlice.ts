@@ -28,12 +28,11 @@ const cartSlice = createSlice({
                 (product) => product._id === action.payload._id
             );
 
-            if (productToAdd) {
-                productToAdd.orderQuantity += 1;
-                return;
+            if (!productToAdd) {
+                state.products.push({ ...action.payload, orderQuantity: 1 });
+            } else {
+                toast.success("Alrady Add This")
             }
-
-            state.products.push({ ...action.payload, orderQuantity: 1 });
         },
         incrementOrderQuantity: (state, action) => {
             const productToIncrement = state.products.find(
@@ -45,7 +44,7 @@ const cartSlice = createSlice({
                 return;
             }
             if (productToIncrement?.quantity === productToIncrement?.orderQuantity) {
-                toast.error("Stock Un Availabe")
+                toast.error("Stock Unavailable")
             }
         },
         decrementOrderQuantity: (state, action) => {
@@ -85,12 +84,9 @@ export const orderedProductsSelector = (state: RootState) => {
 // orderSelector
 export const orderSelector = (state: RootState) => {
     return {
-        products: state.cart.products.map((product) => ({
-            product: product._id,
-            quantity: product.orderQuantity,
-        })),
-        shippingAddress: `${state.cart.shippingAddress} - ${state.cart.city}`,
-        paymentMethod: "Online",
+        products: state.cart.products,
+        // shippingAddress: `${state.cart.shippingAddress} - ${state.cart.city}`,
+        // paymentMethod: "Online",
     }
 }
 

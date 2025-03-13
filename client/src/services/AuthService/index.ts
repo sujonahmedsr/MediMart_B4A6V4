@@ -55,12 +55,12 @@ export const getCurrentUser = async () => {
         decodedData = await jwtDecode(accessToken);
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user/${decodedData?.id}`,
             {
-                next: {
-                    tags: ["USER"]
-                },
                 method: "GET",
                 headers: {
                     Authorization: (await cookies()).get("accessToken")!.value,
+                },
+                next: {
+                    tags: ["USER"]
                 },
             }
         )
@@ -85,9 +85,8 @@ export const updateProfile = async (userData: FieldValues) => {
             },
             body: JSON.stringify(userData),
         })
-        const result = await res.json();
         revalidateTag("USER")
-        return result
+        return res.json()
     } catch (error: any) {
         return Error(error);
     }

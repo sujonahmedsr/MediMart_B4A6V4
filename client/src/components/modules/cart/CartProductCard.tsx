@@ -41,12 +41,8 @@ export default function CartProductCard({ product }: { product: CartProduct }) {
         <h1 className="text-xl font-semibold">{product?.name}</h1>
         <div className="flex gap-5 my-2">
           <p>
-            <span className="text-gray-500">Color:</span>{" "}
-            <span className="font-semibold">Black</span>
-          </p>
-          <p>
             <span className="text-gray-500">Stock Availability:</span>{" "}
-            <span className="font-semibold">{product?.inStock}</span>
+            <span className="font-semibold">{product?.quantity}</span>
           </p>
         </div>
         <hr className="my-1" />

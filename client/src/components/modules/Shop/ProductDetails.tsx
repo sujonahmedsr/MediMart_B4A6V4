@@ -6,14 +6,12 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { IMedicine } from "@/types/medicine";
 import { CheckCheckIcon, X } from "lucide-react";
 import Image from "next/image";
-import { toast } from "sonner";
 import DummyMedicine from "@/assests/dummyMedicine.jpeg"
 
 export default function ProductDetails({ product }: { product: IMedicine }) {
   const dispatch = useAppDispatch()
-  const addProductCart = (product: IMedicine) =>{
+  const addProductCart = (product: IMedicine) => {
     dispatch(addProduct(product))
-    toast.success("Add Product In Cart.")
   }
   return (
     <div>
