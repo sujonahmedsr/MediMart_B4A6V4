@@ -109,7 +109,11 @@ const Navbar = () => {
                                                 </DropdownMenuItem>
                                             </Link>
                                         }
-                                        <DropdownMenuItem>My Orders</DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <Link href={'/My-orders'}>
+                                                My Orders
+                                            </Link>
+                                        </DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem
                                             onClick={handleLogOut}
