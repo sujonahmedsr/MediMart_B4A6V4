@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -6,14 +7,6 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recha
 
 // Define Order Status Type
 type OrderStatus = 'Pending' | 'Delivered';
-
-// Sample Data
-const overviewData = [
-  { label: 'Total Sales', value: '৳1,20,000' },
-  { label: 'Total Orders', value: '540' },
-  { label: 'Pending Orders', value: '12' },
-  { label: 'Low Stock Items', value: '5' },
-];
 
 const recentOrders = [
   { id: 'ORD12345', customer: 'Hasan Ali', medicine: 'Paracetamol', status: 'Pending' as OrderStatus, date: '2025-03-01', payment: 'Unpaid' },
@@ -31,8 +24,19 @@ const statusColors: Record<OrderStatus, string> = {
   Delivered: 'bg-green-100 text-green-600',
 };
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ allOrders }: { allOrders: any }) {
   const [orders] = useState(recentOrders);
+  console.log(allOrders);
+
+
+  // Sample Data
+  const overviewData = [
+    { label: 'Total Revenue', value: `৳ ${allOrders?.revenue?.totalRevenue}` },
+    { label: 'Total Sell', value: `${allOrders?.revenue?.totalSell}` },
+    { label: 'Total Orders', value: `${allOrders?.totalOrders}` },
+    { label: 'Low Stock Items', value: `${allOrders?.lowStockCount}` },
+  ];
+
 
   return (
     <div className="max-w-7xl w-full mx-auto p-6">

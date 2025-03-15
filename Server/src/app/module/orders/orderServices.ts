@@ -175,8 +175,13 @@ const getAdminAllConOrder = async () => {
         }
     ]);
 
+    const totalOrders = await orderModel.countDocuments()
+
+    const lowStockCount = await productModel.countDocuments({quantity: {$lt: 5}})
+
     const allOrders = await orderModel.find().populate("user")
-    return { allOrders, totalRevenue: totalRevenue[0] || { totalRevenue: 0, totalSell: 0 } }
+    
+    return { allOrders, totalOrders, lowStockCount, revenue: totalRevenue[0] || { totalRevenue: 0, totalSell: 0 } }
 }
 
 const verifyPayment = async (order_id: string) => {
