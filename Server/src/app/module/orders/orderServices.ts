@@ -181,7 +181,7 @@ const getAdminAllConOrder = async (query: Record<string, unknown>) => {
 
     const lowStockCount = await productModel.countDocuments({quantity: {$lt: 5}})
 
-    const orderQuery = new QuiryBuilder(orderModel.find().populate("user"), query)
+    const orderQuery = new QuiryBuilder(orderModel.find().populate("user").populate("products.product"), query)
         .sort()
         .paginate()
 

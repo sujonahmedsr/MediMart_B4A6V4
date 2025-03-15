@@ -13,7 +13,7 @@ const orderShchema = new Schema<orderInterface>(
         {
           product: {
             type: Schema.Types.ObjectId,
-            ref: "products",
+            ref: "Product",
             required: true,
           },
           quantity: {

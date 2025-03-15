@@ -54,7 +54,7 @@ const data = {
     },
     {
       title: "Manage Orders",
-      url: "/admin/categories",
+      url: "/admin/orders",
       icon: Bot,
       items: [
         {
