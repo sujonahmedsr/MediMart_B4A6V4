@@ -6,6 +6,7 @@ import { userModel } from "../User Model/userSchema.model";
 import { orderUtils } from "./order.utils";
 import { orderModel } from "./ordersSchemaModel"
 import { StatusCodes } from "http-status-codes";
+import QuiryBuilder from "../../QuiryBuilder/QuiryBuilder";
 
 
 // create order 
@@ -154,11 +155,12 @@ const createOrder = async (user: Tuser, payload: { products: { _id: string; orde
 
 // for revenue 
 const getUserAllOrder = async (user: Tuser) => {
-    const result = await orderModel.find({ user: user?.id }).populate("user")
+    const result = await orderModel.find({ user: user?.id })
+    .populate("user").sort({ updatedAt: -1 })
 
     return result
 }
-const getAdminAllConOrder = async () => {
+const getAdminAllConOrder = async (query: Record<string, unknown>) => {
     const totalRevenue = await orderModel.aggregate([
         {
             $unwind: "$products" // Flatten products array to access each product's quantity
@@ -179,9 +181,14 @@ const getAdminAllConOrder = async () => {
 
     const lowStockCount = await productModel.countDocuments({quantity: {$lt: 5}})
 
-    const allOrders = await orderModel.find().populate("user")
-    
-    return { allOrders, totalOrders, lowStockCount, revenue: totalRevenue[0] || { totalRevenue: 0, totalSell: 0 } }
+    const orderQuery = new QuiryBuilder(orderModel.find().populate("user"), query)
+        .sort()
+        .paginate()
+
+    const allOrders = await orderQuery.modelQuery.lean()
+    const meta = await orderQuery.countTotal();
+
+    return { allOrders, meta, totalOrders, lowStockCount, revenue: totalRevenue[0] || { totalRevenue: 0, totalSell: 0 } }
 }
 
 const verifyPayment = async (order_id: string) => {

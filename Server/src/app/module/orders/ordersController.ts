@@ -26,7 +26,7 @@ const getUserAllConOrder = asyncFunc(async (req, res) => {
     })
 })
 const getAdminAllConOrder = asyncFunc(async (req, res) => {
-    const result = await orderServices.getAdminAllConOrder();
+    const result = await orderServices.getAdminAllConOrder(req.query);
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         message: 'All orders retrives successfully',
