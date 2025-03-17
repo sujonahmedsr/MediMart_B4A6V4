@@ -72,3 +72,21 @@ export const verifiedPayment = async (order_id: any) => {
         throw new Error(error?.message)
     }
 }
+
+export const orderUpdatedStatus = async (payload: any) => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/order/updateStatus`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: (await cookies()).get("accessToken")!.value,
+            },
+            body: JSON.stringify(payload)
+        })
+        const result = res.json()
+        revalidateTag("ORDERS")
+        return result
+    } catch (error: any) {
+        throw new Error(error?.message)
+    }
+}

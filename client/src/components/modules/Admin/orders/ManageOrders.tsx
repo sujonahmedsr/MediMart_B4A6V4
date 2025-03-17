@@ -8,26 +8,25 @@ import TablePagination from "@/components/ui/core/TablePagination";
 import { IOrders } from "@/types/order";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { verifiedPayment } from "@/services/Order";
+import { orderUpdatedStatus, verifiedPayment } from "@/services/Order";
 
 const ManageOrders = ({ orders, meta }: { orders: IOrders[], meta: any }) => {
-    console.log(orders);
 
-    // const handleStatusUpdate = async (orderId: string, status: IOrders["status"]) => {
-    //     const toastId = toast.loading("Updating order status...");
-    //     try {
-    //         const res = await updateOrderStatus(orderId, status);
-    //         if (res?.status) {
-    //             toast.success("Order status updated successfully.");
-    //         } else {
-    //             toast.error("Failed to update order status.");
-    //         }
-    //     } catch (error: any) {
-    //         toast.error("Something went wrong.");
-    //     } finally {
-    //         toast.dismiss(toastId);
-    //     }
-    // };
+    const handleStatusUpdate = async (orderId: string, status: IOrders["status"]) => {
+        const toastId = toast.loading("Updating order status...");
+        try {
+            const res = await orderUpdatedStatus({ id: orderId, status });
+            if (res?.status) {
+                toast.success("Order status updated successfully.");
+            } else {
+                toast.error("Failed to update order status.");
+            }
+        } catch (error: any) {
+            toast.error("Something went wrong.");
+        } finally {
+            toast.dismiss(toastId);
+        }
+    };
 
     const verifyPayment = async (id: string) => {
         try {
@@ -109,7 +108,7 @@ const ManageOrders = ({ orders, meta }: { orders: IOrders[], meta: any }) => {
             cell: ({ row }) => <Button variant={"outline"} className={`w-full 
                 ${row?.original?.status === "Pending" && "text-gray-600"} 
                 ${row?.original?.status === "Paid" && "text-blue-600"} 
-                ${row?.original?.status === "Cancelled" && "text-red-600"} `} onClick={()=>verifyPayment(row.original.transaction?.id)}>
+                `} onClick={() => verifyPayment(row.original.transaction?.id)}>
                 {row?.original?.status === 'Pending' ? "Checking" : row?.original?.status}
             </Button>,
         },
@@ -120,12 +119,36 @@ const ManageOrders = ({ orders, meta }: { orders: IOrders[], meta: any }) => {
                 <select
                     defaultValue={row.original.status}
                     className="border p-1 rounded-md"
-                // onChange={(e) => handleStatusUpdate(row.original._id, e.target.value as IOrders["status"])}
+                    onChange={(e) => handleStatusUpdate(row.original._id, e.target.value as IOrders["status"])}
                 >
-                    <option value="Pending">Pending</option>
-                    <option value="Shipped">Shipped</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Cancelled">Cancelled</option>
+
+                    {
+                        row.original.status === "Pending" && <option value="Pending">Pending</option>
+                    }
+                    {
+                        row.original.status === "Paid" &&
+                        <>
+                            <option value="Paid">Paid</option>
+                            <option value="Processing">Processing</option>
+                        </>
+                    }
+                    {
+                        row.original.status === "Processing" &&
+                        <>
+                            <option value="Processing">Processing</option>
+                            <option value="Shipped">Shipped</option>
+                        </>
+                    }
+                    {
+                        row.original.status === "Shipped" &&
+                        <>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                        </>
+                    }
+                    {
+                        row.original.status === "Delivered" && <option value="Delivered">Delivered</option>
+                    }
                 </select>
             ),
         },

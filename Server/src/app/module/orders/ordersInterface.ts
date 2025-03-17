@@ -8,7 +8,7 @@ export interface orderInterface extends Document {
   }[];
   presCription?: string,
   totalPrice: number;
-  status: "Pending" | "Paid" | "Shipped" | "Completed" | "Cancelled";
+  status: "Pending" | "Paid" | "Processing" | "Shipped" | "Delivered";
   transaction: {
     id: string;
     transactionStatus: string;

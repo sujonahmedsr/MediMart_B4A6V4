@@ -43,10 +43,20 @@ const verifyPayment = asyncFunc(async (req, res) => {
       data: order,
     });
   });
+const orderStatus = asyncFunc(async (req, res) => {
+    const order = await orderServices.updateStatus(req.body);
+  
+    sendResponse(res, {
+      statusCode: StatusCodes.OK,
+      message: "Order status updated successfully",
+      data: order,
+    });
+  });
 
 export const orderController = {
     createConOrder,
     getUserAllConOrder,
     getAdminAllConOrder,
-    verifyPayment
+    verifyPayment,
+    orderStatus
 }

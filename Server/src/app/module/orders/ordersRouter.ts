@@ -9,5 +9,6 @@ orderRouter.patch("/verify", authMid("admin"), orderController.verifyPayment);
 orderRouter.post('/create-order', authMid("customer", "admin"), orderController.createConOrder)
 orderRouter.get('/userAllOrders', authMid("customer", "admin"), orderController.getUserAllConOrder)
 orderRouter.get('/adminAllOrders', authMid("admin"), orderController.getAdminAllConOrder)
+orderRouter.patch('/updateStatus', authMid("admin"), orderController.orderStatus)
 
 export default orderRouter;

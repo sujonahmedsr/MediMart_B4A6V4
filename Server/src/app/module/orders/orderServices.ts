@@ -156,9 +156,9 @@ const createOrder = async (user: Tuser, payload: { products: { _id: string; orde
 // for revenue 
 const getUserAllOrder = async (user: Tuser) => {
     const result = await orderModel.find({ user: user?.id })
-    .populate("user")
-    .populate("products.product")
-    .sort({ updatedAt: -1 })
+        .populate("user")
+        .populate("products.product")
+        .sort({ updatedAt: -1 })
 
     return result
 }
@@ -181,7 +181,7 @@ const getAdminAllConOrder = async (query: Record<string, unknown>) => {
 
     const totalOrders = await orderModel.countDocuments()
 
-    const lowStockCount = await productModel.countDocuments({quantity: {$lt: 5}})
+    const lowStockCount = await productModel.countDocuments({ quantity: { $lt: 5 } })
 
     const orderQuery = new QuiryBuilder(orderModel.find().populate("user").populate("products.product"), query)
         .sort()
@@ -244,9 +244,21 @@ const verifyPayment = async (order_id: string) => {
     return verifiedPayment;
 };
 
+const updateStatus = async (payload: { status: string, id: string }) => {
+
+    const result = await orderModel.findByIdAndUpdate({ _id: payload.id }, {
+        $set: {
+            ...(payload.status && { status: payload.status }),
+        },
+    }, { new: true })
+    return result
+}
+
+
 export const orderServices = {
     createOrder,
     getUserAllOrder,
     getAdminAllConOrder,
-    verifyPayment
+    verifyPayment,
+    updateStatus
 }
