@@ -2,12 +2,12 @@ import nodemailer from "nodemailer";
 
 export const sendEmail = async (to: string, orderId: string, status: string) => {
     const transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
+        host: "smtp.gmail.com",
         port: 587,
         secure: false,
         auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
+            user: 'sujonahmedst@gmail.com',
+            pass: 'msjv gvze tkea rzkf',
         },
     });
 
@@ -31,15 +31,8 @@ export const sendEmail = async (to: string, orderId: string, status: string) => 
         </div>
     `;
 
-    console.log(to, subject, htmlTemplate, "from sendmail");
-
-    console.log("Email User:", process.env.EMAIL_USER);
-    console.log("Email Pass:", process.env.EMAIL_PASS);
-
-
-
     await transporter.sendMail({
-        from: `"Medimart" ${process.env.EMAIL_USER}`,
+        from: `"Medimart" sujonahmedst@gmail.com`,
         to,
         subject,
         text: `Your order #${orderId} status is now ${status}. Thank you for choosing Medimart!`, // plain text fallback
