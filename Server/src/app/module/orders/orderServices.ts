@@ -7,6 +7,7 @@ import { orderUtils } from "./order.utils";
 import { orderModel } from "./ordersSchemaModel"
 import { StatusCodes } from "http-status-codes";
 import QuiryBuilder from "../../QuiryBuilder/QuiryBuilder";
+import { sendEmail } from "../../utils/sentEmail";
 
 
 // create order 
@@ -244,16 +245,26 @@ const verifyPayment = async (order_id: string) => {
     return verifiedPayment;
 };
 
-const updateStatus = async (payload: { status: string, id: string }) => {
+const updateStatus = async (payload: { status: string; id: string }) => {
+    const result = await orderModel
+        .findByIdAndUpdate(
+            { _id: payload.id },
+            { $set: { ...(payload.status && { status: payload.status }) } },
+            { new: true }
+        )
+        .populate("user");
 
-    const result = await orderModel.findByIdAndUpdate({ _id: payload.id }, {
-        $set: {
-            ...(payload.status && { status: payload.status }),
-        },
-    }, { new: true }).populate("user")
-    
-    return result
-}
+    // Convert user to unknown first, then assert its type
+    const user = result?.user as unknown as { email: string } | null;
+
+    if (user?.email) {
+        await sendEmail(user.email, payload.id, payload.status);
+    }
+
+    return result;
+};
+
+
 
 
 export const orderServices = {

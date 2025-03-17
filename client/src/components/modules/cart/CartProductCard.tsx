@@ -53,6 +53,7 @@ export default function CartProductCard({ product }: { product: CartProduct }) {
           <div className="flex items-center gap-2">
             <p className="text-gray-500 font-semibold">Quantity</p>
             <Button
+            disabled={product.quantity === 0}
               onClick={() => handleDecrementQuantity(product?._id)}
               variant="outline"
               className="size-8 rounded-sm"
@@ -63,7 +64,7 @@ export default function CartProductCard({ product }: { product: CartProduct }) {
               {product?.orderQuantity}
             </p>
             <Button
-              disabled={product?.inStock === false}
+              disabled={product.quantity === 0}
               onClick={() => handleIncrementQuantity(product?._id)}
               variant="outline"
               className="size-8 rounded-sm"
@@ -71,7 +72,6 @@ export default function CartProductCard({ product }: { product: CartProduct }) {
               <Plus />
             </Button>
             <Button
-              disabled={product?.inStock === false}
               onClick={() => handleRemoveProduct(product?._id)}
               variant="outline"
               className="size-8 rounded-sm"

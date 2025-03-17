@@ -43,7 +43,7 @@ export default function RegisterForm() {
 
       if (res?.status) {
         toast.success(res?.message);
-        router.push('/')
+        router.push('/login')
       } else {
         toast.error(res?.message);
       }

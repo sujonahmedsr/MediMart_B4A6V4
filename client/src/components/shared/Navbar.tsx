@@ -61,6 +61,7 @@ const Navbar = () => {
         if (protectedRoutes.some((route) => locatoin.match(route))) {
             router.push("/");
         }
+        router.push("/");
     }
     return (
         <section className="p-4 border-b bg-white sticky top-0 z-10 transition-all">

@@ -63,8 +63,9 @@ export default function ProductDetails({ product }: { product: IMedicine }) {
 
               {/* Buttons */}
               <div className="mt-6 flex gap-4">
-                <Button onClick={() => addProductCart((product))} variant="outline" className="rounded-none">Add to Cart</Button>
-                <Button variant="outline" className="rounded-none bg-cyan-950 hover:bg-cyan-800 duration-300 hover:text-white transition-all text-white cursor-pointer" onClick={() => handleBuyNow((product))}>Buy Now</Button>
+                <Button disabled={product?.quantity === 0} onClick={() => addProductCart((product))} 
+                variant="outline" className="rounded-none">Add to Cart</Button>
+                <Button disabled={product?.quantity === 0} variant="outline" className="rounded-none bg-cyan-950 hover:bg-cyan-800 duration-300 hover:text-white transition-all text-white cursor-pointer" onClick={() => handleBuyNow((product))}>Buy Now</Button>
               </div>
 
               <div className="border-2 border-cyan-500 text-sm text-cyan-800 rounded p-4 space-y-1 mt-5">
