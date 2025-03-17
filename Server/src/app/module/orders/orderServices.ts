@@ -250,7 +250,8 @@ const updateStatus = async (payload: { status: string, id: string }) => {
         $set: {
             ...(payload.status && { status: payload.status }),
         },
-    }, { new: true })
+    }, { new: true }).populate("user")
+    
     return result
 }
 
