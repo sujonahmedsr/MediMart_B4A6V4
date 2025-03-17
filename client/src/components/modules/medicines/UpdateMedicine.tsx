@@ -34,7 +34,7 @@ const medicineSchema = z.object({
     name: z.string().min(1, "medicine name is required").optional(),
     image: z.string().optional(),
     price: z.number().min(1, "Price cannot be negative").optional(),
-    category: z.string().min(1, "Category is required").optional(),
+    category: z.string().optional(),
     description: z.string().min(10, "Description must be at least 10 characters").optional(),
     quantity: z.number().min(1, "Quantity cannot be negative").optional(),
     expireDate: z.string().min(1, "Expire Date is required").optional(),
@@ -64,10 +64,10 @@ export default function UpdateMedicine({ product }: { product: IMedicine }) {
         defaultValues: {
             name: product?.name || "",
             image: product?.image || "",
-            price: parseFloat(product?.price),
-            category: product?.category || "",
+            price: Number(product?.price),
+            category: product?.category.name || "",
             description: product?.description || "",
-            quantity: typeof product?.quantity === 'string' ? parseInt(product?.quantity) : product?.quantity || "",
+            quantity: Number(product?.quantity),
             expireDate: product?.expireDate ? new Date(product?.expireDate).toISOString().split('T')[0] : "", // Convert Date to string in "YYYY-MM-DD"
             manufacturerDetails: product?.manufacturerDetails || "",
             requiredPrescription: product?.requiredPrescription || false,
