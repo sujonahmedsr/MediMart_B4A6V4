@@ -10,7 +10,7 @@ export interface IOrders {
     }[],
     presCription: string,
     totalPrice: number,
-    status: "Pending" | "Shipped" | "Completed" | "Cancelled",
+    status: "Pending" | "Processing" | "Shipped" | "Delivered" | "Paid" | "Cancelled",
     transaction: {
         id: string
     },

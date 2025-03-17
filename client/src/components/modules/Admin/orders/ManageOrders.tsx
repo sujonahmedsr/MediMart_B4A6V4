@@ -8,10 +8,11 @@ import TablePagination from "@/components/ui/core/TablePagination";
 import { IOrders } from "@/types/order";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { verifiedPayment } from "@/services/Order";
 
 const ManageOrders = ({ orders, meta }: { orders: IOrders[], meta: any }) => {
     console.log(orders);
-    
+
     // const handleStatusUpdate = async (orderId: string, status: IOrders["status"]) => {
     //     const toastId = toast.loading("Updating order status...");
     //     try {
@@ -27,6 +28,19 @@ const ManageOrders = ({ orders, meta }: { orders: IOrders[], meta: any }) => {
     //         toast.dismiss(toastId);
     //     }
     // };
+
+    const verifyPayment = async (id: string) => {
+        try {
+            const res = await verifiedPayment(id)
+            if (res?.status) {
+                toast.success("Order status updated successfully.");
+            } else {
+                toast.error("Something went wrong. Please Try Again.");
+            }
+        } catch (error) {
+            toast.error("Failed to update order status. Please Try Again.");
+        }
+    }
 
     const columns: ColumnDef<IOrders>[] = [
         {
@@ -92,8 +106,11 @@ const ManageOrders = ({ orders, meta }: { orders: IOrders[], meta: any }) => {
         {
             accessorKey: "payment",
             header: "Check Payment",
-            cell: ({ row }) => <Button variant={"outline"} className="rounded">
-                Check
+            cell: ({ row }) => <Button variant={"outline"} className={`w-full 
+                ${row?.original?.status === "Pending" && "text-gray-600"} 
+                ${row?.original?.status === "Paid" && "text-blue-600"} 
+                ${row?.original?.status === "Cancelled" && "text-red-600"} `} onClick={()=>verifyPayment(row.original.transaction?.id)}>
+                {row?.original?.status === 'Pending' ? "Checking" : row?.original?.status}
             </Button>,
         },
         {

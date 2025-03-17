@@ -236,13 +236,14 @@ const verifyPayment = async (order_id: string) => {
                             ? "Pending"
                             : verifiedPayment[0].bank_status == "Cancel"
                                 ? "Cancelled"
-                                : "",
+                                : "Pending",
             }
         );
     }
 
     return verifiedPayment;
 };
+
 export const orderServices = {
     createOrder,
     getUserAllOrder,

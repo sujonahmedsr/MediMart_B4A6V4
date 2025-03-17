@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server"
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 export const userAllOrders = async () => {
@@ -49,6 +50,23 @@ export const PlaceOrder = async (orderData: any) => {
             body: JSON.stringify(orderData)
         })
         const result = res.json()
+        return result
+    } catch (error: any) {
+        throw new Error(error?.message)
+    }
+}
+
+export const verifiedPayment = async (order_id: any) => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/order/verify?order_id=${order_id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: (await cookies()).get("accessToken")!.value,
+            }
+        })
+        const result = res.json()
+        revalidateTag("ORDERS")
         return result
     } catch (error: any) {
         throw new Error(error?.message)
