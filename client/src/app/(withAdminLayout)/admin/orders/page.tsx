@@ -7,8 +7,13 @@ export const metadata: Metadata = {
     description: "MediMart offers high-quality medicines and healthcare products with quick and reliable delivery. Shop online for all your health needs.",
   };
 
-const page = async () => {
-    const data = await adminAllOrders();
+const page = async ({
+    searchParams,
+  }: {
+    searchParams: Promise<{ page: string }>;
+  }) => {
+    const { page } = await searchParams;
+    const data = await adminAllOrders(page);
 
     return (
         <div>

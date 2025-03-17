@@ -21,9 +21,9 @@ export const userAllOrders = async () => {
     }
 }
 
-export const adminAllOrders = async () => {
+export const adminAllOrders = async (page?: string) => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/order/adminAllOrders`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/order/adminAllOrders?page=${page}`, {
             method: "GET",
             headers: {
                 Authorization: (await cookies()).get("accessToken")!.value,

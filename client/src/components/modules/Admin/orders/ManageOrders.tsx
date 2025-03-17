@@ -105,13 +105,21 @@ const ManageOrders = ({ orders, meta }: { orders: IOrders[], meta: any }) => {
         {
             accessorKey: "payment",
             header: "Check Payment",
-            cell: ({ row }) => <Button variant={"outline"} className={`w-full 
-                ${row?.original?.status === "Pending" && "text-gray-600"} 
-                ${row?.original?.status === "Paid" && "text-blue-600"} 
-                `} onClick={() => verifyPayment(row.original.transaction?.id)}>
-                {row?.original?.status === 'Pending' ? "Checking" : row?.original?.status}
-            </Button>,
-        },
+            cell: ({ row }) => {
+                const isPending = row?.original?.status === "Pending";
+                return (
+                    <Button
+                        variant="outline"
+                        className={`w-full 
+                            ${isPending ? "text-gray-600" : "text-blue-600"}
+                        `}
+                        onClick={isPending ? () => verifyPayment(row.original.transaction?.id) : undefined}
+                    >
+                        {isPending ? "Checking" : 'Paid'}
+                    </Button>
+                );
+            },
+        },        
         {
             accessorKey: "status",
             header: "Status",
