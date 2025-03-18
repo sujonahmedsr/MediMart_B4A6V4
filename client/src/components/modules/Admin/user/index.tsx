@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { adminAllOrders } from '@/services/Order';
+import Loading from '@/app/loading';
 
 // Define Order Status Type
 type OrderStatus = 'Pending' | 'Delivered';
@@ -44,7 +45,7 @@ const [allOrders, setOrders] = useState<any>([]);
     fetchOrders();
   }, []);
 
-  if (loading) return <p className="text-center text-gray-500">Loading orders...</p>;
+  if (loading) return <Loading />;
 
 
   // Sample Data

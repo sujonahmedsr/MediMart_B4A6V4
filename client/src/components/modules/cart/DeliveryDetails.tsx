@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { cities } from "@/constants/cities";
 import { IUser } from "@/types/user";
+import Loading from "@/app/loading";
 
 // Zod schema for validation
 const profileSchema = z.object({
@@ -88,7 +89,7 @@ const DeliveryDetails = () => {
     }, [user, reset, setValue, dispatch]);
 
     if (isLoading) {
-        return <div>Loading...</div>; // Ensure the page stops rendering until the user data is loaded
+        return <Loading />; // Ensure the page stops rendering until the user data is loaded
     }
 
     const handleCitySelect = (city: string) => {

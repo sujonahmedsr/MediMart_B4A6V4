@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { updateProfile } from "@/services/AuthService";
 import axios from "axios";
+import Loading from "@/app/loading";
 
 // Zod schema for validation
 const profileSchema = z.object({
@@ -61,7 +62,7 @@ const Profile = () => {
   }, [user, reset]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Ensure the page stops rendering until the user data is loaded
+    return <Loading />; // Ensure the page stops rendering until the user data is loaded
   }
 
   const handleImageChange = (file: File) => {

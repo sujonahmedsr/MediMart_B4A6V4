@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { allUsers, deactiveUser } from "@/services/Admin";
 import UserDetailsModal from "./UserDetailsModal";
 import { useEffect, useState } from "react";
+import Loading from "@/app/loading";
 
 const Manageusers = () => {
     const [users, setOrders] = useState<IUser[]>([]);
@@ -31,7 +32,8 @@ const Manageusers = () => {
         fetchOrders();
     }, []);
 
-    if (loading) return <p className="text-center text-gray-500">Loading orders...</p>;
+    if (loading) return <Loading />;
+    
     const handleDeactive = async (id: string, booleans: boolean) => {
         const toastId = toast.loading("Loading...");
         try {

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { userAllOrders } from "@/services/Order";
 import { IOrders } from "@/types/order";
+import Loading from "@/app/loading";
 
 type OrderStatus = "Pending" | "Processing" | "Shipped" | "Delivered" | "Paid";
 
@@ -37,7 +38,7 @@ export default function MyOrdersPage() {
     fetchOrders();
   }, []);
 
-  if (loading) return <p className="text-center text-gray-500">Loading orders...</p>;
+  if (loading) return <Loading />;
 
   return (
     <div className="max-w-4xl w-full mx-auto p-6">
