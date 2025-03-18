@@ -1,10 +1,11 @@
-
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { userAllOrders } from "@/services/Order";
 import { IOrders } from "@/types/order";
 
 type OrderStatus = "Pending" | "Processing" | "Shipped" | "Delivered" | "Paid";
@@ -17,14 +18,33 @@ const statusColors: Record<OrderStatus, string> = {
   Paid: "bg-white-100 text-blue-600",
 };
 
-export default function MyOrdersPage({ myOrders }: { myOrders: IOrders[] }) {
+export default function MyOrdersPage() {
+  const [myOrders, setOrders] = useState<IOrders[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const userOrders = await userAllOrders();
+        setOrders(userOrders?.data || []);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  if (loading) return <p className="text-center text-gray-500">Loading orders...</p>;
 
   return (
     <div className="max-w-4xl w-full mx-auto p-6">
       <h1 className="text-3xl font-semibold mb-8">My Orders</h1>
 
       {myOrders.length === 0 ? (
-        <p className="text-gray-500">No orders found.</p>
+        <p className="text-gray-500 text-center">No orders found.</p>
       ) : (
         <div className="space-y-6">
           {myOrders.map((order) => (

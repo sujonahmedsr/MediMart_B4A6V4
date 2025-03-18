@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { adminAllOrders } from '@/services/Order';
 
 // Define Order Status Type
 type OrderStatus = 'Pending' | 'Delivered';
@@ -24,9 +25,26 @@ const statusColors: Record<OrderStatus, string> = {
   Delivered: 'bg-green-100 text-green-600',
 };
 
-export default function AdminDashboard({ allOrders }: { allOrders: any }) {
-  const [orders] = useState(recentOrders);
-  console.log(allOrders);
+export default function AdminDashboard() {
+const [allOrders, setOrders] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const userOrders = await adminAllOrders();
+        setOrders(userOrders?.data || []);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  if (loading) return <p className="text-center text-gray-500">Loading orders...</p>;
 
 
   // Sample Data
@@ -58,7 +76,7 @@ export default function AdminDashboard({ allOrders }: { allOrders: any }) {
       <div className="mb-8">
         <h2 className="text-2xl font-semibold mb-4">Recent Orders</h2>
         <div className="bg-white shadow-md rounded-2xl overflow-hidden">
-          {orders.map((order) => (
+          {recentOrders.map((order) => (
             <div key={order.id} className="flex justify-between items-center p-4 border-b last:border-0">
               <div>
                 <p className="font-medium">{order.customer}</p>

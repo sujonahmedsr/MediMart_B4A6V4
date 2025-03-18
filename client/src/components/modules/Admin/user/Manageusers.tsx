@@ -8,11 +8,30 @@ import { Button } from "@/components/ui/button";
 import { IUser } from "@/types/user";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "sonner";
-import { deactiveUser } from "@/services/Admin";
-import { Eye } from "lucide-react";
+import { allUsers, deactiveUser } from "@/services/Admin";
 import UserDetailsModal from "./UserDetailsModal";
+import { useEffect, useState } from "react";
 
-const Manageusers = ({ users }: { users: IUser[] }) => {
+const Manageusers = () => {
+    const [users, setOrders] = useState<IUser[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                const userOrders = await allUsers();
+                setOrders(userOrders?.data || []);
+            } catch (error) {
+                console.error("Error fetching orders:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchOrders();
+    }, []);
+
+    if (loading) return <p className="text-center text-gray-500">Loading orders...</p>;
     const handleDeactive = async (id: string, booleans: boolean) => {
         const toastId = toast.loading("Loading...");
         try {

@@ -1,5 +1,4 @@
 import Manageusers from "@/components/modules/Admin/user/Manageusers";
-import { allUsers } from "@/services/Admin";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,11 +6,10 @@ export const metadata: Metadata = {
     description: "MediMart offers high-quality medicines and healthcare products with quick and reliable delivery. Shop online for all your health needs.",
   };
 
-const page = async () => {
-    const data = await allUsers();
+const page = () => {
     return (
         <div>
-            <Manageusers users={data?.data} />
+            <Manageusers />
         </div>
     );
 };
