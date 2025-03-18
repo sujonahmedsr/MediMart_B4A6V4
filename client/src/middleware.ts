@@ -6,8 +6,8 @@ type Role = keyof typeof roleBasedPrivateRoutes
 const authRoutes = ['/login', '/register']
 
 const roleBasedPrivateRoutes = {
-    admin: [/^\/admin(\/.*)?$/, /^\/checkOut$/],
-    customer: [/^\/checkOut$/],
+    admin: [/^\/admin(\/.*)?$/, /^\/checkOut$/, /^\/My-orders$/, /^\/profile$/],
+    customer: [/^\/checkOut$/, /^\/My-orders$/, /^\/profile$/],
 }
 
 export const middleware = async (request: NextRequest) => {
@@ -41,6 +41,8 @@ export const config = {
         '/login',
         '/register',
         '/checkOut',
+        '/profile',
+        '/My-orders',
         '/admin',
         "/admin/:path*",
     ]
